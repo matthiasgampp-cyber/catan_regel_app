@@ -115,7 +115,7 @@
                     <span class="px-3 py-1 bg-cyan-500/30 text-cyan-300 rounded-full text-xs font-semibold uppercase tracking-wider border border-cyan-400/30">Meeresforschung</span>
                     <h2 class="font-title font-bold text-2xl text-cyan-100">Das Ziel von Endeavor: Die Tiefsee</h2>
                     <p class="text-cyan-200/90 text-sm leading-relaxed max-w-2xl">
-                        Leite ein marines Forschungsinstitut. Entwickle deine Spezialisierungsleisten, bilde Crew-Mitglieder aus, führe Tauchgänge durch und erschließe Tiefseeschächte für die Schlusswertung nach <strong>7 Runden</strong>.
+                        Leite ein marines Forschungsinstitut. Entwickle deine Spezialisierungsleisten, wirb Crew-Mitglieder an, führe Tauchgänge durch, entdecke den Ozean mit Sonar und setze Projekte für den Meeresschutz nach <strong>7 Runden</strong> um.
                     </p>
                 </div>
                 <div class="flex-shrink-0 bg-slate-950/80 p-4 rounded-xl border border-cyan-500/50 text-center min-w-[140px]">
@@ -129,19 +129,19 @@
                     <div class="flex items-center gap-2 text-slate-900 font-bold">
                         <i data-lucide="users" class="w-5 h-5 text-cyan-600"></i> Crew & Einsetzen
                     </div>
-                    <p class="text-xs text-stone-600">Arbeiter werden in Phase 3 platziert. In Phase 1 kehren sie auf dein Spielertableau zurück.</p>
+                    <p class="text-xs text-stone-600">Aktionsscheiben aktivieren Zonen und Crew. In der Vorbereitungsphase kehrst du Scheiben auf dein Tableau zurück.</p>
                 </div>
                 <div class="bg-white rounded-xl p-5 shadow-sm border border-cyan-200 space-y-2">
                     <div class="flex items-center gap-2 text-slate-900 font-bold">
-                        <i data-lucide="anchor" class="w-5 h-5 text-cyan-600"></i> Tauchboote & Reichweite
+                        <i data-lucide="anchor" class="w-5 h-5 text-cyan-600"></i> U-Boote & Genialität
                     </div>
-                    <p class="text-xs text-stone-600">Vorstoß in tiefere Zonen erfordert stärkere Spezialisierungen (Sonar, Druckkammer) und Sauerstoff.</p>
+                    <p class="text-xs text-stone-600">Vorstoß in tiefere Zonen (bis Tiefe 5) erfordert eine höhere Stufe auf deiner Genialitäts-Leiste.</p>
                 </div>
                 <div class="bg-white rounded-xl p-5 shadow-sm border border-cyan-200 space-y-2">
                     <div class="flex items-center gap-2 text-slate-900 font-bold">
-                        <i data-lucide="network" class="w-5 h-5 text-cyan-600"></i> Schächte & Netzwerke
+                        <i data-lucide="compass" class="w-5 h-5 text-cyan-600"></i> Sonar & Ozeankacheln
                     </div>
-                    <p class="text-xs text-stone-600">Verbinde Schächte auf dem Spielplan, um bei der Endabrechnung Punkte über dein Netzwerk zu erzielen.</p>
+                    <p class="text-xs text-stone-600">Erkunde neue Regionen per Sonar und lege neue Ozeankacheln an, um das Spielfeld in die Tiefe zu erweitern.</p>
                 </div>
             </div>
         </section>
@@ -151,52 +151,42 @@
             <div class="bg-white rounded-2xl p-6 shadow-sm border border-cyan-200 space-y-6">
                 <div>
                     <h3 class="font-title font-bold text-xl text-slate-950 mb-1 flex items-center gap-2">
-                        <i data-lucide="rotate-cw" class="w-6 h-6 text-cyan-600"></i> Der 4-Phasen-Rundenablauf
+                        <i data-lucide="rotate-cw" class="w-6 h-6 text-cyan-600"></i> Der Rundenablauf
                     </h3>
-                    <p class="text-sm text-stone-600">Jede Spielrunde verläuft streng chronologisch in folgenden Abschnitten:</p>
+                    <p class="text-sm text-stone-600">Jede Spielrunde gliedert sich in Vorbereitung und Aktionsphase:</p>
                 </div>
 
                 <div class="space-y-4">
                     <div class="p-4 bg-cyan-50/70 rounded-xl border border-cyan-200">
                         <span class="text-xs font-bold text-cyan-900 uppercase tracking-wide">Phase 1</span>
-                        <h4 class="font-bold text-slate-900 text-base mb-1">Bergungsphase (Retrieve & Income)</h4>
-                        <p class="text-xs text-stone-600 mb-1">Hole deine eingesetzten Crew-Marker von den Aktionsfeldern auf dein Tableau zurück.</p>
+                        <h4 class="font-bold text-slate-900 text-base mb-1">Vorbereitungsphase (Entladen & Anwerben)</h4>
+                        <p class="text-xs text-stone-600 mb-1">Hole Aktionsscheiben gemäß deiner Ränge zurück und rekrutiere Verstärkung.</p>
                         <ul class="list-disc pl-4 text-xs text-stone-700 space-y-0.5">
-                            <li>Generiere Einkommen gemäß deinen freigeschalteten Spezialisierungsstufen.</li>
-                            <li>Verbrauchte Marker (z. B. Sauerstoff) werden gemäß deinen Rängen aufgefrischt.</li>
-                        </ul>
-                    </div>
-
-                    <div class="p-4 bg-cyan-50/70 rounded-xl border border-cyan-200">
-                        <span class="text-xs font-bold text-cyan-900 uppercase tracking-wide">Phase 2</span>
-                        <h4 class="font-bold text-slate-900 text-base mb-1">Bietphase & Anwerben (Bid)</h4>
-                        <p class="text-xs text-stone-600 mb-1">Setze Einfluss oder Ressourcen ein, um deine Position in der Spielerreihenfolge zu bestimmen.</p>
-                        <ul class="list-disc pl-4 text-xs text-stone-700 space-y-0.5">
-                            <li>Wirb neues Crew-Personal aus der Auslage an.</li>
-                            <li>Befördere vorhandene Crewmitglieder in höhere Dienstgrade (Aufstieg).</li>
+                            <li>Nimm verbrauchte Aktionsscheiben aus deinen Zonen zurück in den Laderaum.</li>
+                            <li>Wirb neues Personal aus der Crew-Auslage an oder wähle neue Zonen.</li>
                         </ul>
                     </div>
 
                     <div class="p-4 bg-blue-500/10 rounded-xl border border-blue-300">
-                        <span class="text-xs font-bold text-slate-900 uppercase tracking-wide">Phase 3</span>
-                        <h4 class="font-bold text-slate-900 text-base mb-1">Hauptaktionsphase (Actions)</h4>
-                        <p class="text-xs text-stone-600 mb-2">Reihum führt jeder Spieler im Uhrzeigersinn <strong>eine Aktion</strong> aus, bis alle passen:</p>
+                        <span class="text-xs font-bold text-slate-900 uppercase tracking-wide">Phase 2</span>
+                        <h4 class="font-bold text-slate-900 text-base mb-1">Aktionsphase</h4>
+                        <p class="text-xs text-stone-600 mb-2">Reihum führt jeder Spieler im Uhrzeigersinn <strong>eine Aktion</strong> durch Aktivierung von Crew/Zonen aus:</p>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
                             <div class="bg-white p-3 rounded-lg border border-cyan-200">
-                                <span class="font-bold text-slate-900">Tauchgang & Erkundung:</span>
-                                <p class="text-stone-600 mt-1">Bewege Tauchboote entlang der Linien, entdecke neue Regionen und sammle Entdeckungsmarker.</p>
+                                <span class="font-bold text-slate-900">Tauchgang & Sonar:</span>
+                                <p class="text-stone-600 mt-1">Bewege U-Boote in erlaubte Tiefenebenen, ziehe Tauchplättchen oder decke mit Sonar neue Kacheln auf.</p>
                             </div>
                             <div class="bg-white p-3 rounded-lg border border-cyan-200">
-                                <span class="font-bold text-slate-900">Schachtbau & Biologie:</span>
-                                <p class="text-stone-600 mt-1">Platziere Schacht-Token zur Vernetzung oder schütze Zonen als Meeresschutzgebiet.</p>
+                                <span class="font-bold text-slate-900">Wissen & Meeresschutz:</span>
+                                <p class="text-stone-600 mt-1">Sammle Wissen bei Forschungstauchgängen und nutze es für Naturschutzprojekte und Zielkarten.</p>
                             </div>
                         </div>
                     </div>
 
                     <div class="p-4 bg-slate-100 rounded-xl border border-slate-300">
-                        <span class="text-xs font-bold text-slate-600 uppercase tracking-wide">Phase 4</span>
-                        <h4 class="font-bold text-slate-900 text-base mb-1">Rundenabschluss & Ränge</h4>
-                        <p class="text-xs text-stone-600">Prüfe Kartenlimits, aktualisiere die Auslage und rücke den Rundenanzeiger für die nächste Runde vor.</p>
+                        <span class="text-xs font-bold text-slate-600 uppercase tracking-wide">Phase 3</span>
+                        <h4 class="font-bold text-slate-900 text-base mb-1">Rundenabschluss</h4>
+                        <p class="text-xs text-stone-600">Prüfe Handkarten- und Vorratslimits, aktualisiere die Crew-Auslage und rücke den Rundenanzeiger vor.</p>
                     </div>
                 </div>
             </div>
@@ -207,35 +197,35 @@
             <div class="bg-white rounded-2xl p-6 shadow-sm border border-cyan-200 space-y-6">
                 <div>
                     <h3 class="font-title font-bold text-xl text-slate-950 mb-1 flex items-center gap-2">
-                        <i data-lucide="help-circle" class="w-6 h-6 text-cyan-600"></i> Ikonografie & Spielfeldsymbole
+                        <i data-lucide="help-circle" class="w-6 h-6 text-cyan-600"></i> Ikonografie & Spezialisierungsleisten
                     </h3>
-                    <p class="text-sm text-stone-600">Erklärung aller Symbole auf den Regionen und Spezialisierungstafeln:</p>
+                    <p class="text-sm text-stone-600">Erklärung der 4 zentralen Entwicklungsleisten auf dem Tableau:</p>
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
                     <div class="p-4 bg-cyan-50/60 rounded-xl border border-cyan-200 space-y-1">
                         <div class="font-bold text-slate-900 flex items-center gap-2 text-sm">
-                            <span>💡</span> Inspiration / Kultur
+                            <span>🧠</span> Genialität / Technik
                         </div>
-                        <p class="text-stone-600">Erhöht die Wissensstufe. Erlaubt das Anwerben höherrangiger Crew und schaltet biologische Projekte frei.</p>
+                        <p class="text-stone-600">Bestimmt deine maximale Tauchtiefe (Ebenen 1 bis 5) und die Reichweite deiner U-Boote.</p>
                     </div>
                     <div class="p-4 bg-cyan-50/60 rounded-xl border border-cyan-200 space-y-1">
                         <div class="font-bold text-slate-900 flex items-center gap-2 text-sm">
-                            <span>💰</span> Reichtum / Finanzierung
+                            <span>📦</span> Laderaum / Kapazität
                         </div>
-                        <p class="text-stone-600">Erforderlich für den Bau teurer Tiefseeschächte, Ausrüstungs-Upgrades und tiefe Operationen.</p>
+                        <p class="text-stone-600">Bestimmt, wie viele Aktionsscheiben du in der Vorbereitungsphase zum Aktivieren von Aktionen zurück erhältst.</p>
                     </div>
                     <div class="p-4 bg-cyan-50/60 rounded-xl border border-cyan-200 space-y-1">
                         <div class="font-bold text-slate-900 flex items-center gap-2 text-sm">
-                            <span>🌐</span> Einfluss / Netzwerk
+                            <span>👥</span> Rekrutierung / Personal
                         </div>
-                        <p class="text-stone-600">Stärkt deine Position beim Bieten in Phase 2 und sichert Meeresschutzgebiete vor Mitspielern.</p>
+                        <p class="text-stone-600">Erlaubt das Anwerben höherwertiger Spezialisten aus der Crew-Auslage.</p>
                     </div>
                     <div class="p-4 bg-cyan-50/60 rounded-xl border border-cyan-200 space-y-1">
                         <div class="font-bold text-slate-900 flex items-center gap-2 text-sm">
-                            <span>⚓</span> Schacht-Verbindung
+                            <span>📚</span> Wissen / Forschung
                         </div>
-                        <p class="text-stone-600">Markiert Linien auf dem Plan, die zwei Tiefseeregionen verknüpfen. Hier platzierst du Schacht-Token.</p>
+                        <p class="text-stone-600">Dient als Voraussetzung und Währung zur Umsetzung von Meeresschutzprojekten und Szenariozielen.</p>
                     </div>
                 </div>
             </div>
@@ -246,20 +236,20 @@
             <div class="bg-white rounded-2xl p-6 shadow-sm border border-cyan-200 space-y-6">
                 <div>
                     <h3 class="font-title font-bold text-xl text-slate-950 mb-1 flex items-center gap-2">
-                        <i data-lucide="anchor" class="w-6 h-6 text-cyan-600"></i> Tauchboot-Operationen (Distanzen & Tiefe)
+                        <i data-lucide="anchor" class="w-6 h-6 text-cyan-600"></i> U-Boot-Operationen & Tiefen
                     </h3>
-                    <p class="text-sm text-stone-600">Regeln zur Steuerung deiner Forschungsboote in der Tiefsee:</p>
+                    <p class="text-sm text-stone-600">Regeln zur Steuerung deiner U-Boote im Ozean:</p>
                 </div>
 
                 <div class="space-y-3 text-xs text-stone-700">
                     <div class="p-3.5 bg-cyan-50/60 rounded-xl border border-cyan-200">
-                        <strong class="text-slate-900">Maximale Tauchtiefe (Druck & Sonar):</strong> Regionen sind in Tiefenzonen eingeteilt. Um in Zone II oder III vorzudringen, muss deine Druckkammer-Stufe auf deinem Tableau entsprechend ausgebaut sein.
+                        <strong class="text-slate-900">Maximale Tauchtiefe (Genialitätsstufe):</strong> Die Ozeankacheln sind in Tiefen von 1 bis 5 unterteilt. Du darfst nur in Kacheln tauchen, deren Tiefenstufe deine aktuelle Genialität nicht übersteigt.
                     </div>
                     <div class="p-3.5 bg-cyan-50/60 rounded-xl border border-cyan-200">
-                        <strong class="text-slate-900">Bewegungsreichweite (Sauerstoff):</strong> Das Zurücklegen jeder Verbindungslinie kostet 1 Reichweiten-Punkt bzw. 1 Einheiten Sauerstoff aus deinem Vorrat.
+                        <strong class="text-slate-900">Aktionspunkte & Bewegung:</strong> U-Boote werden über Aktionsscheiben auf Crew-Karten/Zonen bewegt. Die Anzahl der erlaubten Schritte richtet sich nach deinen Werten.
                     </div>
                     <div class="p-3.5 bg-cyan-50/60 rounded-xl border border-cyan-200">
-                        <strong class="text-slate-900">Blockaden & Besetzung:</strong> Mehrere Boote dürfen auf demselben Feld stehen, aber Entdeckungsmarker gehören demjenigen, der das Feld zuerst betritt und die Aktion abschließt.
+                        <strong class="text-slate-900">Sonar-Aktion:</strong> Erlaubt das Ziehen neuer Ozeankacheln, um den Meeresgrund schrittweise nach unten hin zu erweitern.
                     </div>
                 </div>
 
@@ -270,7 +260,7 @@
                     </h4>
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                         <div class="bg-slate-900 p-3 rounded-xl border border-cyan-700 flex flex-col items-center">
-                            <span class="text-xs text-cyan-300 mb-1">Geplante Felder (Distanz)</span>
+                            <span class="text-xs text-cyan-300 mb-1">Geplante Schritte (Bewegung)</span>
                             <div class="flex items-center gap-2">
                                 <button onclick="changeDiveCalc('dist', -1)" class="w-7 h-7 rounded bg-slate-800 hover:bg-slate-700 font-bold">-</button>
                                 <span id="dc-dist" class="font-bold w-6 text-center">1</span>
@@ -278,7 +268,7 @@
                             </div>
                         </div>
                         <div class="bg-slate-900 p-3 rounded-xl border border-cyan-700 flex flex-col items-center">
-                            <span class="text-xs text-cyan-300 mb-1">Ziel-Tiefenzone</span>
+                            <span class="text-xs text-cyan-300 mb-1">Ziel-Tiefenebene (1 bis 5)</span>
                             <div class="flex items-center gap-2">
                                 <button onclick="changeDiveCalc('depth', -1)" class="w-7 h-7 rounded bg-slate-800 hover:bg-slate-700 font-bold">-</button>
                                 <span id="dc-depth" class="font-bold w-6 text-center">1</span>
@@ -288,7 +278,7 @@
                     </div>
                     <div class="bg-slate-900 p-4 rounded-xl border border-cyan-600 text-xs">
                         <div class="text-xs uppercase text-cyan-400 font-semibold mb-1">Voraussetzung für Tauchgang:</div>
-                        <div id="dive-calc-results" class="text-cyan-100">1x Sauerstoff, Druckkammer-Stufe 1 erforderlich.</div>
+                        <div id="dive-calc-results" class="text-cyan-100">Genialitäts-Stufe 1 erforderlich, 1 Bewegungspunkt benötigt.</div>
                     </div>
                 </div>
             </div>
@@ -299,17 +289,17 @@
             <div class="bg-white rounded-2xl p-6 shadow-sm border border-cyan-200 space-y-6">
                 <div>
                     <h3 class="font-title font-bold text-xl text-slate-950 mb-1 flex items-center gap-2">
-                        <i data-lucide="users" class="w-6 h-6 text-cyan-600"></i> Crew-Management & Beförderung
+                        <i data-lucide="users" class="w-6 h-6 text-cyan-600"></i> Crew & Zonen-Management
                     </h3>
-                    <p class="text-sm text-stone-600">So entwickelst du deine Forschungsmannschaft weiter:</p>
+                    <p class="text-sm text-stone-600">So erweiterst du deine Mannschaft und Aktionsmöglichkeiten:</p>
                 </div>
 
                 <div class="space-y-3 text-xs text-stone-700">
                     <div class="p-3.5 bg-cyan-50/60 rounded-xl border border-cyan-200">
-                        <strong class="text-slate-900">Beförderung (Aufstieg):</strong> Während Phase 2 (Anwerben) kannst du Mannschaftsmitglieder auf höhere Dienstgrade bringen. Das schaltet mächtigere Aktionsfelder auf deinem Tableau frei.
+                        <strong class="text-slate-900">Anwerben:</strong> Zu Beginn einer Runde wirbst du neue Crew-Mitglieder aus der Auslage an. Deine Rekrutierungsleiste bestimmt, welche Stufen dir offenstehen.
                     </div>
                     <div class="p-3.5 bg-cyan-50/60 rounded-xl border border-cyan-200">
-                        <strong class="text-slate-900">Einkommen & Ränge:</strong> Höherrangige Crewmitglieder erhöhen dein regelmäßiges Runden-Einkommen in Phase 1 spürbar.
+                        <strong class="text-slate-900">Spezialisierung & Aktionen:</strong> Jedes Crew-Mitglied bringt spezifische Aktionsfelder mit, auf die du Holzscheiben aus dem Laderaum legst, um Tauchen, Sonar oder Schutzaktionen auszuführen.
                     </div>
                 </div>
 
@@ -320,7 +310,7 @@
                     </h4>
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs mb-4">
                         <div class="bg-slate-900 p-3 rounded-xl border border-cyan-700 flex justify-between items-center">
-                            <span>Rang 1 (Basis)</span>
+                            <span>Stufe 1 Crew</span>
                             <div class="flex gap-1.5">
                                 <button onclick="changeCrewCount('r1', -1)" class="w-6 h-6 bg-slate-800 hover:bg-slate-700 font-bold rounded">-</button>
                                 <span id="cc-r1" class="w-5 text-center font-bold">2</span>
@@ -328,7 +318,7 @@
                             </div>
                         </div>
                         <div class="bg-slate-900 p-3 rounded-xl border border-cyan-700 flex justify-between items-center">
-                            <span>Rang 2 (Fortgeschritten)</span>
+                            <span>Stufe 2 Crew</span>
                             <div class="flex gap-1.5">
                                 <button onclick="changeCrewCount('r2', -1)" class="w-6 h-6 bg-slate-800 hover:bg-slate-700 font-bold rounded">-</button>
                                 <span id="cc-r2" class="w-5 text-center font-bold">0</span>
@@ -336,7 +326,7 @@
                             </div>
                         </div>
                         <div class="bg-slate-900 p-3 rounded-xl border border-cyan-700 flex justify-between items-center">
-                            <span>Rang 3 (Experte)</span>
+                            <span>Stufe 3 Crew</span>
                             <div class="flex gap-1.5">
                                 <button onclick="changeCrewCount('r3', -1)" class="w-6 h-6 bg-slate-800 hover:bg-slate-700 font-bold rounded">-</button>
                                 <span id="cc-r3" class="w-5 text-center font-bold">0</span>
@@ -345,21 +335,21 @@
                         </div>
                     </div>
                     <div class="bg-slate-900 p-3 rounded-xl border border-cyan-600 text-xs flex justify-between items-center">
-                        <span class="text-cyan-300">Generiertes Einkommen in Phase 1:</span>
-                        <span id="crew-income-total" class="font-bold text-cyan-200 text-sm">2 Ressourcen/Einfluss</span>
+                        <span class="text-cyan-300">Freigeschaltete Aktions-Kapazität:</span>
+                        <span id="crew-income-total" class="font-bold text-cyan-200 text-sm">2 Aktionen / Boni</span>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- 6. Vorrat & Wertung -->
+        <!-- 6. Punkte & Schlusswertung -->
         <section id="sec-tokens" class="tab-content hidden space-y-6">
             <div class="bg-white rounded-2xl p-6 shadow-sm border border-cyan-200 space-y-6">
                 <div>
                     <h3 class="font-title font-bold text-xl text-slate-950 mb-1 flex items-center gap-2">
                         <i data-lucide="award" class="w-6 h-6 text-cyan-600"></i> Schlusswertung & Punkte-Rechner
                     </h3>
-                    <p class="text-sm text-stone-600">So berechnest du das Gesamtergebnis am Ende von Runde 7:</p>
+                    <p class="text-sm text-stone-600">Berechne deine Punkte am Ende der 7. Runde:</p>
                 </div>
 
                 <!-- Interaktiver Punkte-Rechner -->
@@ -367,30 +357,30 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
                         <div class="bg-cyan-50/70 p-3.5 rounded-xl border border-cyan-200 flex justify-between items-center">
                             <div>
-                                <span class="font-bold text-slate-900">Entdeckungen & Projekte</span>
-                                <div class="text-[10px] text-stone-500">Punkte laut Plättchen</div>
+                                <span class="font-bold text-slate-900">Spezialisierungsleisten</span>
+                                <div class="text-[10px] text-stone-500">Punkte je nach Endstufe der Leisten</div>
+                            </div>
+                            <div class="flex gap-1.5">
+                                <button onclick="changeEndeavorPt('tracks', -1)" class="w-6 h-6 bg-cyan-700 text-white font-bold rounded">-</button>
+                                <span id="ep-tracks" class="w-6 text-center font-bold">0</span>
+                                <button onclick="changeEndeavorPt('tracks', 1)" class="w-6 h-6 bg-cyan-700 text-white font-bold">+</button>
+                            </div>
+                        </div>
+                        <div class="bg-cyan-50/70 p-3.5 rounded-xl border border-cyan-200 flex justify-between items-center">
+                            <div>
+                                <span class="font-bold text-slate-900">Tauch- & Entdeckungsplättchen</span>
+                                <div class="text-[10px] text-stone-500">Gesammelte Siegpunkte auf Plättchen</div>
                             </div>
                             <div class="flex gap-1.5">
                                 <button onclick="changeEndeavorPt('disc', -1)" class="w-6 h-6 bg-cyan-700 text-white font-bold rounded">-</button>
                                 <span id="ep-disc" class="w-6 text-center font-bold">0</span>
-                                <button onclick="changeEndeavorPt('disc', 1)" class="w-6 h-6 bg-cyan-700 text-white font-bold rounded">+</button>
+                                <button onclick="changeEndeavorPt('disc', 1)" class="w-6 h-6 bg-cyan-700 text-white font-bold">+</button>
                             </div>
                         </div>
                         <div class="bg-cyan-50/70 p-3.5 rounded-xl border border-cyan-200 flex justify-between items-center">
                             <div>
-                                <span class="font-bold text-slate-900">Gebaute Schächte</span>
-                                <div class="text-[10px] text-stone-500">2 SP pro Schacht</div>
-                            </div>
-                            <div class="flex gap-1.5">
-                                <button onclick="changeEndeavorPt('shafts', -1)" class="w-6 h-6 bg-cyan-700 text-white font-bold rounded">-</button>
-                                <span id="ep-shafts" class="w-6 text-center font-bold">0</span>
-                                <button onclick="changeEndeavorPt('shafts', 1)" class="w-6 h-6 bg-cyan-700 text-white font-bold">+</button>
-                            </div>
-                        </div>
-                        <div class="bg-cyan-50/70 p-3.5 rounded-xl border border-cyan-200 flex justify-between items-center">
-                            <div>
-                                <span class="font-bold text-slate-900">Meeresschutzgebiete</span>
-                                <div class="text-[10px] text-stone-500">3 SP pro Zone</div>
+                                <span class="font-bold text-slate-900">Meeresschutz & Naturschutz</span>
+                                <div class="text-[10px] text-stone-500">Punkte für geschützte Zonen/Projekte</div>
                             </div>
                             <div class="flex gap-1.5">
                                 <button onclick="changeEndeavorPt('reserves', -1)" class="w-6 h-6 bg-cyan-700 text-white font-bold rounded">-</button>
@@ -400,13 +390,13 @@
                         </div>
                         <div class="bg-cyan-50/70 p-3.5 rounded-xl border border-cyan-200 flex justify-between items-center">
                             <div>
-                                <span class="font-bold text-slate-900">Spezialisierungs-Boni</span>
-                                <div class="text-[10px] text-stone-500">Punkte laut Leisten-Stufe</div>
+                                <span class="font-bold text-slate-900">Szenario- / Auftragskarten</span>
+                                <div class="text-[10px] text-stone-500">Erfüllte Aufträge & Missionen</div>
                             </div>
                             <div class="flex gap-1.5">
-                                <button onclick="changeEndeavorPt('tracks', -1)" class="w-6 h-6 bg-cyan-700 text-white font-bold rounded">-</button>
-                                <span id="ep-tracks" class="w-6 text-center font-bold">0</span>
-                                <button onclick="changeEndeavorPt('tracks', 1)" class="w-6 h-6 bg-cyan-700 text-white font-bold">+</button>
+                                <button onclick="changeEndeavorPt('missions', -1)" class="w-6 h-6 bg-cyan-700 text-white font-bold rounded">-</button>
+                                <span id="ep-missions" class="w-6 text-center font-bold">0</span>
+                                <button onclick="changeEndeavorPt('missions', 1)" class="w-6 h-6 bg-cyan-700 text-white font-bold">+</button>
                             </div>
                         </div>
                     </div>
@@ -432,9 +422,9 @@
                     </div>
                     <div class="flex flex-wrap gap-1.5" id="faq-filters-container">
                         <button onclick="filterFaq('all')" class="faq-filter-btn active px-2.5 py-1 text-xs rounded-lg border border-cyan-300 font-semibold transition-all">Alle</button>
-                        <button onclick="filterFaq('submersibles')" class="faq-filter-btn px-2.5 py-1 text-xs rounded-lg border border-cyan-300 font-semibold transition-all">Tauchboote & Tiefe</button>
-                        <button onclick="filterFaq('crew')" class="faq-filter-btn px-2.5 py-1 text-xs rounded-lg border border-cyan-300 font-semibold transition-all">Crew & Aufstieg</button>
-                        <button onclick="filterFaq('tokens')" class="faq-filter-btn px-2.5 py-1 text-xs rounded-lg border border-cyan-300 font-semibold transition-all">Schächte & Vorrat</button>
+                        <button onclick="filterFaq('submersibles')" class="faq-filter-btn px-2.5 py-1 text-xs rounded-lg border border-cyan-300 font-semibold transition-all">U-Boote & Tiefe</button>
+                        <button onclick="filterFaq('crew')" class="faq-filter-btn px-2.5 py-1 text-xs rounded-lg border border-cyan-300 font-semibold transition-all">Crew & Zonen</button>
+                        <button onclick="filterFaq('tokens')" class="faq-filter-btn px-2.5 py-1 text-xs rounded-lg border border-cyan-300 font-semibold transition-all">Plättchen & Schutz</button>
                     </div>
                 </div>
 
@@ -464,9 +454,9 @@
             { id: 'overview', label: 'Übersicht', icon: 'book-open' },
             { id: 'turn', label: 'Rundenablauf', icon: 'rotate-cw' },
             { id: 'symbols', label: 'Symbole & Plan', icon: 'help-circle' },
-            { id: 'submersibles', label: 'Tauchboote', icon: 'anchor' },
-            { id: 'crew', label: 'Crew & Aufstieg', icon: 'users' },
-            { id: 'tokens', label: 'Schächte & Punkte', icon: 'award' },
+            { id: 'submersibles', label: 'U-Boote & Tiefen', icon: 'anchor' },
+            { id: 'crew', label: 'Crew & Zonen', icon: 'users' },
+            { id: 'tokens', label: 'Wertung & Punkte', icon: 'award' },
             { id: 'faq', label: 'FAQ', icon: 'help-circle' }
         ];
 
@@ -474,33 +464,33 @@
         const faqData = [
             {
                 cat: "submersibles",
-                q: "Kann ich ohne ausreichende Druckkammer-Stufe in Tiefenzone II tauchen?",
-                a: "Nein! Das Betreten von tieferen Zonen (Zone II oder III) ist strikt an deine freigeschaltete Druckkammer-Spezialisierung gekoppelt. Fehlt diese, musst du in flacheren Zonen bleiben."
+                q: "Gibt es im Spiel Sauerstoff als Ressource?",
+                a: "Nein! Die Tiefe deines Tauchgangs wird durch deine **Genialitäts-Leiste** beschränkt (Tiefenstufen 1 bis 5). Für Aktionen und Bewegung verbrauchst du Aktionsscheiben aus deinem Laderaum, aber keinen Sauerstoff."
             },
             {
                 cat: "submersibles",
-                q: "Dürfen zwei Spieler auf demselben Knotenpunkt stehen?",
-                a: "Ja, mehrere Tauchboote dürfen sich auf demselben Feld befinden. Entdeckungsmarker gehören jedoch dem Spieler, der das Feld als Erster betritt und die entsprechende Erkundungs-Aktion ausführt."
+                q: "Kann ich ohne ausreichende Genialitäts-Stufe in tiefere Ebenen tauchen?",
+                a: "Nein! Das Betreten von tiefen Ozeankacheln (z. B. Tiefe 3 oder 4) ist strikt an deine freigeschaltete Genialitäts-Stufe gekoppelt. Fehlt diese, musst du in flacheren Ebenen bleiben."
+            },
+            {
+                cat: "submersibles",
+                q: "Kann man im Spiel eigene Schächte oder Gräben bauen?",
+                a: "Nein. Man baut keine Schächte. Der Ozean wird stattdessen mithilfe der **Sonar-Aktionsfelder** erkundet und erweitert, indem verdeckte Ozeankacheln an das bestehende Spielfeld angelegt werden."
             },
             {
                 cat: "crew",
-                q: "Wann kehren meine Crew-Marker zurück?",
-                a: "Eingesetzte Arbeiter verbleiben während der Aktionsphase (Phase 3) auf den Feldern. Sie werden erst zu Beginn von **Phase 1 (Bergungsphase)** in der folgenden Runde auf dein Tableau zurückgeholt."
+                q: "Wann kehren meine Aktionsscheiben zurück?",
+                a: "Eingesetzte Holzscheiben verbleiben auf den Aktionsfeldern. Sie werden zu Beginn der **Vorbereitungsphase** der nächsten Runde zurück in deinen Laderaum geholt (gemäß deiner Kapazitätsleiste)."
             },
             {
                 cat: "crew",
-                q: "Wie funktioniert die Beförderung der Crew?",
-                a: "In Phase 2 (Bietphase/Anwerben) kannst du Mannschaftsmitglieder auf höhere Dienstgrade aufwerten. Dadurch schalten sie stärkere Aktionsfelder frei und generieren in Phase 1 mehr Einkommen."
+                q: "Wie erhalte ich neue Crew-Mitglieder?",
+                a: "Zu Beginn jeder Runde wirbst du eine neue Crew-Karte aus der Auslage an. Deine Rekrutierungsleiste bestimmt, aus welchen Stufen du wählen darfst."
             },
             {
                 cat: "tokens",
-                q: "Wer bekommt die Punkte für einen gebauten Schacht?",
-                a: "Schacht-Token zählen bei der Schlusswertung für den Spieler, der sie auf den Verbindungslinien platziert hat. Je länger das zusammenhängende Netzwerk ist, desto höher fällt der Punktwert aus."
-            },
-            {
-                cat: "tokens",
-                q: "Was passiert, wenn mein Vorrat an Schacht-Token leer ist?",
-                a: "Du kannst keine weiteren Schächte mehr bauen. Das Limit entspricht den physikalisch auf deinem Spielertableau vorhandenen Markern."
+                q: "Wie funktionieren Meeresschutzgebiete?",
+                a: "Wenn du ein Forschungsziel abschließt oder Wissen aufwendest, kannst du Marker auf Meeresschutz-Feldern platzieren. Diese bringen dir am Spielende wichtige Siegpunkte."
             }
         ];
 
@@ -609,10 +599,10 @@
         const diveState = { dist: 1, depth: 1 };
         function changeDiveCalc(type, delta) {
             diveState[type] = Math.max(1, diveState[type] + delta);
-            if(type === 'depth') diveState.depth = Math.min(3, diveState.depth);
+            if(type === 'depth') diveState.depth = Math.min(5, diveState.depth);
             document.getElementById(`dc-${type}`).textContent = diveState[type];
             document.getElementById('dive-calc-results').textContent = 
-                `${diveState.dist}x Sauerstoff, Druckkammer-Stufe ${diveState.depth} erforderlich.`;
+                `Genialitäts-Stufe ${diveState.depth} erforderlich, ${diveState.dist} Bewegungsschritt(e) benötigt.`;
         }
 
         // Crew-Tracker
@@ -621,18 +611,18 @@
             crewState[type] = Math.max(0, crewState[type] + delta);
             document.getElementById(`cc-${type}`).textContent = crewState[type];
             const totalIncome = (crewState.r1 * 1) + (crewState.r2 * 2) + (crewState.r3 * 3);
-            document.getElementById('crew-income-total').textContent = `${totalIncome} Ressourcen/Einfluss`;
+            document.getElementById('crew-income-total').textContent = `${totalIncome} Aktionen / Boni`;
         }
 
         // Siegpunkt-Rechner
-        const endeavorPts = { disc: 0, shafts: 0, reserves: 0, tracks: 0 };
+        const endeavorPts = { tracks: 0, disc: 0, reserves: 0, missions: 0 };
         function changeEndeavorPt(type, delta) {
             endeavorPts[type] = Math.max(0, endeavorPts[type] + delta);
             document.getElementById(`ep-${type}`).textContent = endeavorPts[type];
             calcEndeavorPoints();
         }
         function calcEndeavorPoints() {
-            const total = (endeavorPts.disc * 1) + (endeavorPts.shafts * 2) + (endeavorPts.reserves * 3) + (endeavorPts.tracks * 1);
+            const total = endeavorPts.tracks + endeavorPts.disc + endeavorPts.reserves + endeavorPts.missions;
             document.getElementById('ep-total').textContent = total;
             document.getElementById('ep-status').textContent = `Aktueller Punktestand: ${total} Siegpunkte.`;
         }
