@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+<html lang="de" class="h-full bg-amber-50">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catan - Das interaktive Regelwerk & Erweiterung</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        catan: {
+                            gold: '#D97706',
+                            wood: '#78350F',
+                            brick: '#B91C1C',
+                            wheat: '#EAB308',
+                            ore: '#475569',
+                            wool: '#16A34A',
+                            sand: '#FEF3C7',
+                            board: '#FDE68A',
+                            card: '#FFFBEB',
+                            knight: '#1E3A8A',
+                            barbarian: '#451A03'
+                        }
+                    },
+                    fontFamily: {
+                        title: ['Cinzel', 'serif'],
+                        sans: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #FEF3C7;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #D97706;
+            border-radius: 9999px;
+        }
+        .tab-btn.active {
+            background-color: #78350F;
+            color: #FFFFFF;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        .mode-btn.active {
+            background-color: #D97706;
+            color: #FFFFFF;
+            border-color: #F59E0B;
+        }
+        .faq-filter-btn.active {
+            background-color: #78350F;
+            color: #FFFFFF;
+            border-color: #78350F;
+        }
+    </style>
+</head>
+<body class="h-full font-sans text-stone-800 flex flex-col antialiased selection:bg-amber-200 selection:text-amber-900">
+
+    <!-- Header Section -->
+    <header class="bg-gradient-to-r from-amber-900 via-amber-800 to-red-900 text-amber-100 shadow-lg border-b-4 border-amber-600 sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 py-3 sm:px-6 flex flex-col md:flex-row items-center justify-between gap-3">
+            <div class="flex items-center gap-3 cursor-pointer" onclick="switchTab('overview')">
+                <div class="w-10 h-10 rounded-lg bg-amber-500/20 border-2 border-amber-400/40 flex items-center justify-center text-amber-400 font-title font-bold text-xl shadow-inner">
+                    C
+                </div>
+                <div>
+                    <h1 class="font-title font-bold text-xl tracking-wider text-amber-50">CATAN</h1>
+                    <p class="text-xs text-amber-300/80 font-medium tracking-wide">Regelbegleiter & Erweiterungen</p>
+                </div>
+            </div>
+
+            <!-- Link zur Spiele-Auswahl (Hub) -->
+            <a href="index.html" class="px-3 py-1.5 rounded-lg bg-amber-950/80 border border-amber-700/60 text-xs font-bold text-amber-200 hover:text-white flex items-center gap-1.5 transition-all shadow-inner">
+                <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i> Spiele-Hub
+            </a>
+
+            <!-- Mode Selector Switcher -->
+            <div class="flex items-center bg-amber-950/80 p-1 rounded-xl border border-amber-700/60 shadow-inner">
+                <button onclick="setGameMode('base')" id="mode-base" class="mode-btn active px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5">
+                    <i data-lucide="home" class="w-3.5 h-3.5"></i> Basisspiel
+                </button>
+                <button onclick="setGameMode('candk')" id="mode-candk" class="mode-btn px-3 py-1.5 rounded-lg text-xs font-bold transition-all flex items-center gap-1.5 text-amber-200 hover:text-white">
+                    <i data-lucide="shield" class="w-3.5 h-3.5"></i> Städte & Ritter
+                </button>
+            </div>
+
+            <!-- Global Search Box -->
+            <div class="relative w-full md:w-64">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-amber-300/70">
+                    <i data-lucide="search" class="w-4 h-4"></i>
+                </div>
+                <input type="text" id="global-search" oninput="handleSearch(this.value)" 
+                    placeholder="Regel oder Frage suchen..." 
+                    class="w-full pl-9 pr-8 py-1.5 text-sm bg-amber-950/50 border border-amber-700/60 rounded-full text-amber-100 placeholder-amber-400/60 focus:outline-none focus:ring-2 focus:ring-amber-400 transition-all">
+                <button id="clear-search" onclick="clearSearch()" class="hidden absolute inset-y-0 right-0 pr-3 flex items-center text-amber-400 hover:text-white">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Navigation Bar -->
+    <nav class="bg-amber-900/95 backdrop-blur border-b border-amber-700/50 text-amber-200 text-xs sm:text-sm font-medium sticky top-[65px] z-40 shadow-sm">
+        <div class="max-w-6xl mx-auto px-2 flex justify-start gap-1 overflow-x-auto custom-scrollbar py-2" id="nav-tabs-container">
+            <!-- Dynamically populated via JS -->
+        </div>
+    </nav>
+
+    <!-- Content Container -->
+    <main class="flex-grow max-w-6xl w-full mx-auto p-4 sm:p-6 mb-12">
+
+        <!-- SEARCH RESULTS PANEL -->
+        <section id="search-results-panel" class="hidden mb-8 bg-white rounded-2xl p-5 shadow-lg border border-amber-200">
+            <div class="flex items-center justify-between pb-3 border-b border-amber-100 mb-4">
+                <h2 class="font-title font-bold text-lg text-amber-900 flex items-center gap-2">
+                    <i data-lucide="search-code" class="w-5 h-5 text-amber-600"></i> Suchergebnisse (<span id="search-count">0</span>)
+                </h2>
+                <span class="text-xs text-amber-700 bg-amber-100 px-2 py-1 rounded-full" id="search-query-display"></span>
+            </div>
+            <div id="search-results-list" class="space-y-3"></div>
+        </section>
+
+        <!-- ==================== BASE GAME SECTIONS ==================== -->
+        
+        <!-- BASE: Overview -->
+        <section id="sec-base-overview" class="base-tab-content tab-content space-y-6">
+            <div class="bg-gradient-to-br from-amber-800 to-amber-900 text-amber-50 rounded-2xl p-6 shadow-md border border-amber-700 flex flex-col md:flex-row items-center justify-between gap-6">
+                <div class="space-y-2">
+                    <span class="px-3 py-1 bg-amber-500/30 text-amber-300 rounded-full text-xs font-semibold uppercase tracking-wider border border-amber-400/30">Basisspiel</span>
+                    <h2 class="font-title font-bold text-2xl text-amber-100">Das Ziel von Catan</h2>
+                    <p class="text-amber-200/90 text-sm leading-relaxed max-w-2xl">
+                        Errichte Siedlungen, Städte und Straßen, handle mit Rohstoffen und erreiche als Erster <strong>10 Siegpunkte</strong> in deinem eigenen Spielzug.
+                    </p>
+                </div>
+                <div class="flex-shrink-0 bg-amber-950/40 p-4 rounded-xl border border-amber-600/50 text-center min-w-[140px]">
+                    <div class="font-title font-black text-4xl text-amber-400">10</div>
+                    <div class="text-xs text-amber-200 font-medium mt-1">Siegpunkte zum Sieg</div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="bg-white rounded-xl p-5 shadow-sm border border-amber-200 space-y-2">
+                    <div class="flex items-center gap-2 text-amber-900 font-bold">
+                        <i data-lucide="arrow-right-left" class="w-5 h-5 text-amber-600"></i> Handeln & Tauschen
+                    </div>
+                    <p class="text-xs text-stone-600">Nur der **aktive Spieler** darf handeln. Handel zwischen passiven Spielern ist strikt verboten.</p>
+                </div>
+                <div class="bg-white rounded-xl p-5 shadow-sm border border-amber-200 space-y-2">
+                    <div class="flex items-center gap-2 text-amber-900 font-bold">
+                        <i data-lucide="ruler" class="w-5 h-5 text-amber-600"></i> Abstandsregel
+                    </div>
+                    <p class="text-xs text-stone-600">Eine Siedlung/Stadt muss mindestens 2 Kanten (3 freie Kreuzungen) von jeder anderen Siedlung/Stadt entfernt sein.</p>
+                </div>
+                <div class="bg-white rounded-xl p-5 shadow-sm border border-amber-200 space-y-2">
+                    <div class="flex items-center gap-2 text-amber-900 font-bold">
+                        <i data-lucide="skull" class="w-5 h-5 text-red-600"></i> Räuber & 7er Wurf
+                    </div>
+                    <p class="text-xs text-stone-600">Ab 8 Handkarten muss bei einer 7 die Hälfte abgegeben werden. Der Räuber blockiert Erträge.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- BASE: Turn Structure & Rules -->
+        <section id="sec-base-turn" class="base-tab-content tab-content hidden space-y-6">
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-amber-200 space-y-6">
+                <div>
+                    <h3 class="font-title font-bold text-xl text-amber-950 mb-1 flex items-center gap-2">
+                        <i data-lucide="play-circle" class="w-6 h-6 text-amber-600"></i> Detaillierter Zugablauf (Basisspiel)
+                    </h3>
+                    <p class="text-sm text-stone-600">Ein Spielzug gliedert sich in 3 aufeinanderfolgende Abschnitte:</p>
+                </div>
+
+                <div class="space-y-4">
+                    <!-- Phase 0: Vor dem Würfeln -->
+                    <div class="p-4 bg-amber-50 rounded-xl border border-amber-200">
+                        <span class="text-xs font-bold text-amber-800 uppercase tracking-wide">Optionale Aktion vor dem Wurf</span>
+                        <h4 class="font-bold text-stone-900 text-base mb-1">Ritterkarte ausspielen</h4>
+                        <p class="text-xs text-stone-600">Du darfst <strong>eine</strong> bereits in einer vorherigen Runde gezogene Ritterkarte ausspielen, <em>bevor</em> du die Würfel wirfst. Dies erlaubt es dir, einen Räuber zu versetzen, der deine Landschaften blockiert!</p>
+                    </div>
+
+                    <!-- Phase 1 -->
+                    <div class="p-4 bg-amber-500/10 rounded-xl border border-amber-300/60">
+                        <span class="text-xs font-bold text-amber-900 uppercase tracking-wide">Phase 1</span>
+                        <h4 class="font-bold text-stone-900 text-base mb-1">Würfeln & Ertragsauszahlung</h4>
+                        <p class="text-xs text-stone-600 mb-2">Wirf beide Zahlenwürfel. Die Augensumme bestimmt die Landschaften, die Rohstoffe produzieren.</p>
+                        <ul class="list-disc pl-4 text-xs text-stone-700 space-y-1">
+                            <li><strong>Würfelsumme 2-12 (außer 7):</strong> Jede Siedlung am Feld erhält 1 Rohstoff, jede Stadt erhält 2 Rohstoffe. Ist das Feld vom Räuber besetzt, gibt es <em>keine</em> Rohstoffe.</li>
+                            <li><strong>Würfelsumme 7:</strong> Kein Ertrag. Spieler mit <strong>8 oder mehr Handkarten</strong> müssen die Hälfte ihrer Karten (abgerundet) in den Vorrat abgeben. Du versetzt den Räuber auf ein beliebiges Feld und stiehlst 1 verdeckte Handkarte von einem angrenzenden Mitspieler.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Phase 2 -->
+                    <div class="p-4 bg-amber-500/10 rounded-xl border border-amber-300/60">
+                        <span class="text-xs font-bold text-amber-900 uppercase tracking-wide">Phase 2</span>
+                        <h4 class="font-bold text-stone-900 text-base mb-1">Handels-, Bau- & Aktionsphase</h4>
+                        <p class="text-xs text-stone-600 mb-2">Im Basisspiel darfst du beliebig oft bauen und handeln. Handeln und Bauen dürfen frei miteinander abgewechselt werden!</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs mt-3">
+                            <div class="bg-white p-3 rounded-lg border border-amber-200">
+                                <span class="font-bold text-amber-900">Binnenhandel (Mitspielertausch):</span>
+                                <p class="text-stone-600 mt-1">Nur du als aktiver Spieler darfst mit Mitspielern verhandeln. Es dürfen nur Rohstoffe gegen Rohstoffe getauscht werden (1:1, 2:1 etc. je nach Einigung). Keine Schenkungen!</p>
+                            </div>
+                            <div class="bg-white p-3 rounded-lg border border-amber-200">
+                                <span class="font-bold text-amber-900">Seehandel (Bank & Häfen):</span>
+                                <p class="text-stone-600 mt-1">4 gleiche Rohstoffe ➔ 1 beliebiger Rohstoff bei der Bank. An einem 3:1 Hafen ➔ 3 gleiche für 1. An einem 2:1 Spezialhafen ➔ 2 der passenden Sorte für 1 beliebigen.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Phase 3 -->
+                    <div class="p-4 bg-stone-100 rounded-xl border border-stone-300">
+                        <span class="text-xs font-bold text-stone-600 uppercase tracking-wide">Phase 3</span>
+                        <h4 class="font-bold text-stone-900 text-base mb-1">Zugende</h4>
+                        <p class="text-xs text-stone-600">Reiche die Würfel im Uhrzeigersinn an deinen linken Nachbarn weiter. Dein Zug ist nun offiziell beendet.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- BASE: Costs & Calculator -->
+        <section id="sec-base-costs" class="base-tab-content tab-content hidden space-y-6">
+            <div class="bg-amber-100/70 border border-amber-200 rounded-2xl p-5 text-stone-800">
+                <h3 class="font-title font-bold text-xl text-amber-950 mb-1 flex items-center gap-2">
+                    <i data-lucide="coins" class="w-6 h-6 text-amber-600"></i> Baukosten & Bedarfsrechner (Basisspiel)
+                </h3>
+                <p class="text-sm text-stone-600">Klicke deine geplanten Bauvorhaben an, um den Gesamtbedarf an Rohstoffen zu berechnen:</p>
+            </div>
+
+            <!-- Cost Cards Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="bg-white rounded-xl p-4 border border-amber-200 shadow-sm">
+                    <h4 class="font-bold text-amber-950 mb-1">Straße</h4>
+                    <p class="text-xs text-stone-500 mb-3">Voraussetzung für Expansion (0 SP)</p>
+                    <div class="flex flex-col gap-1 text-xs">
+                        <span class="bg-red-50 text-red-800 px-2 py-0.5 rounded border border-red-200">🧱 1x Lehm</span>
+                        <span class="bg-amber-50 text-amber-800 px-2 py-0.5 rounded border border-amber-200">🪵 1x Holz</span>
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl p-4 border border-amber-200 shadow-sm">
+                    <h4 class="font-bold text-amber-950 mb-1">Siedlung</h4>
+                    <p class="text-xs text-stone-500 mb-3">Bringt 1 Siegpunkt & 1 Ertrag</p>
+                    <div class="flex flex-col gap-1 text-xs">
+                        <span class="bg-red-50 text-red-800 px-2 py-0.5 rounded border border-red-200">🧱 1x Lehm</span>
+                        <span class="bg-amber-50 text-amber-800 px-2 py-0.5 rounded border border-amber-200">🪵 1x Holz</span>
+                        <span class="bg-emerald-50 text-emerald-800 px-2 py-0.5 rounded border border-emerald-200">🐑 1x Wolle</span>
+                        <span class="bg-yellow-50 text-yellow-800 px-2 py-0.5 rounded border border-yellow-200">🌾 1x Getreide</span>
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl p-4 border border-amber-200 shadow-sm">
+                    <h4 class="font-bold text-amber-950 mb-1">Stadt</h4>
+                    <p class="text-xs text-stone-500 mb-3">Upgrade Siedlung (2 SP & 2 Ertrag)</p>
+                    <div class="flex flex-col gap-1 text-xs">
+                        <span class="bg-yellow-50 text-yellow-800 px-2 py-0.5 rounded border border-yellow-200">🌾 2x Getreide</span>
+                        <span class="bg-slate-100 text-slate-800 px-2 py-0.5 rounded border border-slate-300">🪨 3x Erz</span>
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl p-4 border border-amber-200 shadow-sm">
+                    <h4 class="font-bold text-amber-950 mb-1">Entwicklungskarte</h4>
+                    <p class="text-xs text-stone-500 mb-3">Ritter, Fortschritt oder Siegpunkt</p>
+                    <div class="flex flex-col gap-1 text-xs">
+                        <span class="bg-emerald-50 text-emerald-800 px-2 py-0.5 rounded border border-emerald-200">🐑 1x Wolle</span>
+                        <span class="bg-yellow-50 text-yellow-800 px-2 py-0.5 rounded border border-yellow-200">🌾 1x Getreide</span>
+                        <span class="bg-slate-100 text-slate-800 px-2 py-0.5 rounded border border-slate-300">🪨 1x Erz</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Calculator Widget -->
+            <div class="bg-amber-900 text-amber-50 rounded-2xl p-6 shadow-md border border-amber-800">
+                <h4 class="font-title font-bold text-lg text-amber-200 mb-4 flex items-center gap-2">
+                    <i data-lucide="calculator" class="w-5 h-5 text-amber-400"></i> Rohstoff-Bedarfsrechner
+                </h4>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
+                    <div class="bg-amber-950/60 p-3 rounded-xl border border-amber-700/50 flex flex-col items-center">
+                        <span class="text-xs text-amber-300 mb-1">Straßen</span>
+                        <div class="flex items-center gap-2">
+                            <button onclick="changeBaseCalc('road', -1)" class="w-7 h-7 rounded bg-amber-800 hover:bg-amber-700 font-bold">-</button>
+                            <span id="bc-road" class="font-bold w-6 text-center">0</span>
+                            <button onclick="changeBaseCalc('road', 1)" class="w-7 h-7 rounded bg-amber-800 hover:bg-amber-700 font-bold">+</button>
+                        </div>
+                    </div>
+                    <div class="bg-amber-950/60 p-3 rounded-xl border border-amber-700/50 flex flex-col items-center">
+                        <span class="text-xs text-amber-300 mb-1">Siedlungen</span>
+                        <div class="flex items-center gap-2">
+                            <button onclick="changeBaseCalc('settlement', -1)" class="w-7 h-7 rounded bg-amber-800 hover:bg-amber-700 font-bold">-</button>
+                            <span id="bc-settlement" class="font-bold w-6 text-center">0</span>
+                            <button onclick="changeBaseCalc('settlement', 1)" class="w-7 h-7 rounded bg-amber-800 hover:bg-amber-700 font-bold">+</button>
+                        </div>
+                    </div>
+                    <div class="bg-amber-950/60 p-3 rounded-xl border border-amber-700/50 flex flex-col items-center">
+                        <span class="text-xs text-amber-300 mb-1">Städte</span>
+                        <div class="flex items-center gap-2">
+                            <button onclick="changeBaseCalc('city', -1)" class="w-7 h-7 rounded bg-amber-800 hover:bg-amber-700 font-bold">-</button>
+                            <span id="bc-city" class="font-bold w-6 text-center">0</span>
+                            <button onclick="changeBaseCalc('city', 1)" class="w-7 h-7 rounded bg-amber-800 hover:bg-amber-700 font-bold">+</button>
+                        </div>
+                    </div>
+                    <div class="bg-amber-950/60 p-3 rounded-xl border border-amber-700/50 flex flex-col items-center">
+                        <span class="text-xs text-amber-300 mb-1">Dev-Karten</span>
+                        <div class="flex items-center gap-2">
+                            <button onclick="changeBaseCalc('devCard', -1)" class="w-7 h-7 rounded bg-amber-800 hover:bg-amber-700 font-bold">-</button>
+                            <span id="bc-devCard" class="font-bold w-6 text-center">0</span>
+                            <button onclick="changeBaseCalc('devCard', 1)" class="w-7 h-7 rounded bg-amber-800 hover:bg-amber-700 font-bold">+</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-amber-950 p-4 rounded-xl border border-amber-600">
+                    <div class="text-xs uppercase text-amber-400 font-semibold mb-2">Benötigte Rohstoffe gesamt:</div>
+                    <div id="base-calc-results" class="flex flex-wrap gap-2 text-xs">Noch keine Auswahl.</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- BASE: Points Calculator -->
+        <section id="sec-base-points" class="base-tab-content tab-content hidden space-y-6">
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-amber-200">
+                <h3 class="font-title font-bold text-xl text-amber-950 mb-4 flex items-center gap-2">
+                    <i data-lucide="trophy" class="w-6 h-6 text-amber-600"></i> Siegpunkt-Rechner (Basisspiel)
+                </h3>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+                    <div class="bg-amber-50 p-3.5 rounded-xl border border-amber-200 flex justify-between items-center">
+                        <div>
+                            <div class="font-bold text-xs text-amber-950">Siedlungen</div>
+                            <span class="text-[11px] text-stone-500">1 SP pro Stück</span>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="changeBasePt('settlements', -1)" class="w-7 h-7 rounded bg-amber-700 text-white font-bold">-</button>
+                            <span id="bp-settlements" class="font-bold w-6 text-center">2</span>
+                            <button onclick="changeBasePt('settlements', 1)" class="w-7 h-7 rounded bg-amber-700 text-white font-bold">+</button>
+                        </div>
+                    </div>
+                    <div class="bg-amber-50 p-3.5 rounded-xl border border-amber-200 flex justify-between items-center">
+                        <div>
+                            <div class="font-bold text-xs text-amber-950">Städte</div>
+                            <span class="text-[11px] text-stone-500">2 SP pro Stück</span>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="changeBasePt('cities', -1)" class="w-7 h-7 rounded bg-amber-700 text-white font-bold">-</button>
+                            <span id="bp-cities" class="font-bold w-6 text-center">0</span>
+                            <button onclick="changeBasePt('cities', 1)" class="w-7 h-7 rounded bg-amber-700 text-white font-bold">+</button>
+                        </div>
+                    </div>
+                    <div class="bg-amber-50 p-3.5 rounded-xl border border-amber-200 flex justify-between items-center">
+                        <div>
+                            <div class="font-bold text-xs text-amber-950">Siegpunktkarten</div>
+                            <span class="text-[11px] text-stone-500">1 SP pro Karte</span>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="changeBasePt('cards', -1)" class="w-7 h-7 rounded bg-amber-700 text-white font-bold">-</button>
+                            <span id="bp-cards" class="font-bold w-6 text-center">0</span>
+                            <button onclick="changeBasePt('cards', 1)" class="w-7 h-7 rounded bg-amber-700 text-white font-bold">+</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex flex-wrap items-center gap-6 mb-6 p-4 bg-stone-50 rounded-xl border border-stone-200">
+                    <label class="flex items-center gap-2 cursor-pointer text-xs font-bold text-stone-800">
+                        <input type="checkbox" id="bp-road" onchange="calcBasePoints()" class="w-4 h-4 accent-amber-600 rounded"> 
+                        🛣️ Längste Handelsstraße (+2 SP)
+                    </label>
+                    <label class="flex items-center gap-2 cursor-pointer text-xs font-bold text-stone-800">
+                        <input type="checkbox" id="bp-knights" onchange="calcBasePoints()" class="w-4 h-4 accent-amber-600 rounded"> 
+                        ⚔️ Größte Rittermacht (+2 SP)
+                    </label>
+                </div>
+                <div class="bg-amber-950 text-amber-50 p-5 rounded-xl flex justify-between items-center">
+                    <div>
+                        <span class="text-xs uppercase text-amber-300 font-bold tracking-wider">Aktueller Punktestand</span>
+                        <div id="bp-status" class="text-xs text-amber-400 mt-0.5">Noch 8 Punkte bis zum Sieg (10 SP).</div>
+                    </div>
+                    <div id="bp-total" class="font-title font-black text-4xl text-amber-300">2</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- BASE: FAQ Catalog -->
+        <section id="sec-base-faq" class="base-tab-content tab-content hidden space-y-4">
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-amber-200 space-y-4">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-amber-100">
+                    <div>
+                        <h3 class="font-title font-bold text-xl text-amber-950">Erweiterter FAQ-Katalog</h3>
+                        <p class="text-xs text-stone-500">Klicke auf die Kategorien, um gezielt Regelfragen zu filtern:</p>
+                    </div>
+                    <!-- FAQ Category Filters -->
+                    <div class="flex flex-wrap gap-1.5" id="faq-filters-base">
+                        <button onclick="filterFaq('all')" class="faq-filter-btn active px-2.5 py-1 text-xs rounded-lg border border-amber-300 font-semibold transition-all">Alle</button>
+                        <button onclick="filterFaq('trade')" class="faq-filter-btn px-2.5 py-1 text-xs rounded-lg border border-amber-300 font-semibold transition-all">Handel & Tauschen</button>
+                        <button onclick="filterFaq('turn')" class="faq-filter-btn px-2.5 py-1 text-xs rounded-lg border border-amber-300 font-semibold transition-all">Zugablauf & Timing</button>
+                        <button onclick="filterFaq('robber')" class="faq-filter-btn px-2.5 py-1 text-xs rounded-lg border border-amber-300 font-semibold transition-all">Räuber & 7er</button>
+                        <button onclick="filterFaq('building')" class="faq-filter-btn px-2.5 py-1 text-xs rounded-lg border border-amber-300 font-semibold transition-all">Straßen & Bauen</button>
+                    </div>
+                </div>
+
+                <!-- Accordion Items -->
+                <div class="space-y-3" id="faq-container-base">
+                    <!-- Dynamic rendering via JS for Base FAQ -->
+                </div>
+            </div>
+        </section>
+
+
+        <!-- ==================== C&K SECTIONS (STÄDTE & RITTER) ==================== -->
+
+        <!-- C&K: Overview -->
+        <section id="sec-candk-overview" class="candk-tab-content tab-content hidden space-y-6">
+            <div class="bg-gradient-to-br from-blue-900 via-stone-900 to-amber-950 text-amber-50 rounded-2xl p-6 shadow-md border border-blue-700/50 flex flex-col md:flex-row items-center justify-between gap-6">
+                <div class="space-y-2">
+                    <span class="px-3 py-1 bg-blue-500/30 text-blue-300 rounded-full text-xs font-semibold uppercase tracking-wider border border-blue-400/30">Erweiterung</span>
+                    <h2 class="font-title font-bold text-2xl text-amber-100">Städte & Ritter (Cities & Knights)</h2>
+                    <p class="text-amber-200/90 text-sm leading-relaxed max-w-2xl">
+                        Catan wird taktischer und anspruchsvoller. Städte produzieren neben Rohstoffen auch <strong>Handelsgüter</strong>, Ritter schützen vor dem <strong>Barbarenangriff</strong>, und in drei Kategorien kann bis zur <strong>Metropole</strong> geforscht werden!
+                    </p>
+                </div>
+                <div class="flex-shrink-0 bg-blue-950/60 p-4 rounded-xl border border-blue-600/50 text-center min-w-[140px]">
+                    <div class="font-title font-black text-3xl text-blue-400">13</div>
+                    <div class="text-xs text-amber-200 font-medium mt-1">Siegpunkte zum Sieg</div>
+                </div>
+            </div>
+
+            <!-- Handelsgüter Grid -->
+            <div class="bg-white rounded-2xl p-5 shadow-sm border border-amber-200 space-y-4">
+                <h3 class="font-title font-bold text-lg text-amber-950 flex items-center gap-2">
+                    <i data-lucide="package" class="w-5 h-5 text-amber-600"></i> Die 3 Handelsgüter
+                </h3>
+                <p class="text-xs text-stone-600">Städte an folgenden Landschaften produzieren bei entsprechendem Wurf <strong>1 Rohstoff + 1 Handelsgut</strong>:</p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                    <div class="p-3 bg-green-50 rounded-xl border border-green-200 flex items-center gap-3">
+                        <span class="text-2xl">🧶</span>
+                        <div>
+                            <span class="font-bold text-xs text-stone-900">Tuch (Grün)</span>
+                            <p class="text-[11px] text-stone-600">Produziert an **Weiden** (Schaf + Tuch). Benötigt für **Handels-Ausbau**.</p>
+                        </div>
+                    </div>
+                    <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 flex items-center gap-3">
+                        <span class="text-2xl">🪙</span>
+                        <div>
+                            <span class="font-bold text-xs text-stone-900">Münze (Blau)</span>
+                            <p class="text-[11px] text-stone-600">Produziert an **Gebirgen** (Erz + Münze). Benötigt für **Politik-Ausbau**.</p>
+                        </div>
+                    </div>
+                    <div class="p-3 bg-yellow-50 rounded-xl border border-yellow-200 flex items-center gap-3">
+                        <span class="text-2xl">📜</span>
+                        <div>
+                            <span class="font-bold text-xs text-stone-900">Papier (Gelb)</span>
+                            <p class="text-[11px] text-stone-600">Produziert an **Wäldern** (Holz + Papier). Benötigt für **Wissenschafts-Ausbau**.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Der rote Ereigniswürfel & Barbarenschiff -->
+            <div class="bg-white rounded-2xl p-5 shadow-sm border border-amber-200 space-y-3">
+                <h3 class="font-title font-bold text-lg text-amber-950 flex items-center gap-2">
+                    <i data-lucide="dice-5" class="w-5 h-5 text-amber-600"></i> Der Ereigniswürfel (Roter Würfel + Symbolwürfel)
+                </h3>
+                <p class="text-xs text-stone-600">Es wird immer mit 3 Würfeln gewürfelt: 2 Ertragswürfel (Rot + Weiß) & 1 Symbolwürfel:</p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                    <div class="p-3 bg-amber-50 rounded-lg border border-amber-200">
+                        <span class="font-bold text-amber-950">⛵ Barbarenschiff (3 Seiten):</span>
+                        <p class="text-stone-600 mt-1">Das Schiff rückt auf der Barbarenleiste 1 Feld vor. Erreicht es den Anlegeplatz, greifen die Barbaren an!</p>
+                    </div>
+                    <div class="p-3 bg-amber-50 rounded-lg border border-amber-200">
+                        <span class="font-bold text-amber-950">🏰 Stadttor (Grün, Blau, Gelb):</span>
+                        <p class="text-stone-600 mt-1">Spieler, deren Ausbaustufe in dieser Farbe &ge; Zahl auf dem roten Würfel ist, ziehen 1 Fortschrittskarte!</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- C&K: Turn Structure -->
+        <section id="sec-candk-turn" class="candk-tab-content tab-content hidden space-y-6">
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-amber-200 space-y-6">
+                <div>
+                    <h3 class="font-title font-bold text-xl text-amber-950 mb-1 flex items-center gap-2">
+                        <i data-lucide="rotate-cw" class="w-6 h-6 text-amber-600"></i> Spielablauf & Phasen in Städte & Ritter
+                    </h3>
+                    <p class="text-sm text-stone-600">Zugstruktur mit allen Besonderheiten und Aktions-Optionen:</p>
+                </div>
+
+                <div class="space-y-4">
+                    <!-- Phase 0: Vor dem Würfeln -->
+                    <div class="p-4 bg-yellow-50 rounded-xl border border-yellow-300">
+                        <span class="text-xs font-bold text-yellow-900 uppercase tracking-wide">Wichtige Sonderregel VOR dem Würfeln</span>
+                        <h4 class="font-bold text-stone-900 text-base mb-1">Aktionen & Karten vor dem Würfelwurf</h4>
+                        <ul class="list-disc pl-4 text-xs text-stone-700 space-y-1">
+                            <li><strong>Alchemie-Karte:</strong> Muss ausgespielt werden, <em>bevor</em> gewürfelt wird! Du bestimmst das Ergebnis der beiden Zahlenwürfel selbst. Der Ereigniswürfel wird danach normal gewürfelt.</li>
+                            <li><strong>Ritter-Aktionen:</strong> Du darfst bereits vor dem Würfeln Ritter aktivieren, versetzen oder den Räuber vertreiben.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Phase 1: Würfeln & Barbaren/Ertrag -->
+                    <div class="p-4 bg-blue-50 rounded-xl border border-blue-200">
+                        <span class="text-xs font-bold text-blue-900 uppercase tracking-wide">Phase 1</span>
+                        <h4 class="font-bold text-stone-900 text-base mb-1">Würfeln & Barbarenleiste / Ertrag</h4>
+                        <ol class="list-decimal pl-4 text-xs text-stone-700 space-y-1">
+                            <li>Erst den <strong>Ereigniswürfel</strong> auswerten (Schiff vorrücken ODER Fortschrittskarte vergeben).</li>
+                            <li>Zahlenwürfel auswerten: Landschaften zahlen Rohstoffe (Siedlungen = 1 Rohstoff) und Handelsgüter (Städte = 1 Rohstoff + 1 Handelsgut) aus.</li>
+                            <li>Erreicht das Barbarenschiff das Feld Catan, findet <strong>sofort der Barbarenangriff</strong> statt, bevor Rohstoffe vergeben werden!</li>
+                        </ol>
+                    </div>
+
+                    <!-- Phase 2: Freies Mischen -->
+                    <div class="p-4 bg-amber-50 rounded-xl border border-amber-300">
+                        <span class="text-xs font-bold text-amber-900 uppercase tracking-wide">Phase 2</span>
+                        <h4 class="font-bold text-stone-900 text-base mb-1">Handeln, Bauen, Ritter & Fortschrittskarten</h4>
+                        <p class="text-xs text-stone-600 mb-2">In Städte & Ritter gibt es <strong>keine starre Trennung</strong> mehr zwischen Handeln und Bauen. Du darfst alle folgenden Aktionen beliebig miteinander mischen:</p>
+                        <ul class="list-disc pl-4 text-xs text-stone-700 space-y-1">
+                            <li>Binnenhandel mit dem aktiven Spieler & Seehandel durchführen.</li>
+                            <li>Straßen, Siedlungen, Städte, Stadtmauern und Ritter bauen oder aufrüsten.</li>
+                            <li>Handelsgüter abgeben, um Stadtentwicklungen (Handel, Politik, Wissenschaft) zu steigern.</li>
+                            <li>Beliebig viele Fortschrittskarten ausspielen (außer im Zug des Ziehens).</li>
+                            <li>Ritter aktivieren (1 Getreide), versetzen oder gegnerische Ritter vertreiben.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- C&K: Developments & Metropolises -->
+        <section id="sec-candk-developments" class="candk-tab-content tab-content hidden space-y-6">
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-amber-200 space-y-6">
+                <div>
+                    <h3 class="font-title font-bold text-xl text-amber-950 mb-1 flex items-center gap-2">
+                        <i data-lucide="trending-up" class="w-6 h-6 text-amber-600"></i> Stadtentwicklungen & Metropolen (Stufen 1–5)
+                    </h3>
+                    <p class="text-sm text-stone-600">Durch Abgabe der passenden Handelsgüter kletterst du auf dem Stadtausbau-Tableau nach oben:</p>
+                </div>
+
+                <!-- 3 Categories -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="bg-green-50/70 border border-green-200 rounded-xl p-4 space-y-2">
+                        <div class="flex items-center gap-2 border-b border-green-200 pb-2">
+                            <span class="text-xl">🧶</span>
+                            <h4 class="font-bold text-green-950 text-sm">Handel (Tuch)</h4>
+                        </div>
+                        <ul class="text-xs text-stone-700 space-y-1">
+                            <li><strong>Stufe 3 (Händlerschutz):</strong> Du darfst Rohstoffe/Güter 2:1 an der Bank tauschen.</li>
+                            <li><strong>Stufe 5 (Metropole):</strong> +2 extra SP (insgesamt 4 SP für diese Stadt). Metropole geschützt vor Barbaren.</li>
+                        </ul>
+                    </div>
+                    <div class="bg-blue-50/70 border border-blue-200 rounded-xl p-4 space-y-2">
+                        <div class="flex items-center gap-2 border-b border-blue-200 pb-2">
+                            <span class="text-xl">🪙</span>
+                            <h4 class="font-bold text-blue-950 text-sm">Politik (Münze)</h4>
+                        </div>
+                        <ul class="text-xs text-stone-700 space-y-1">
+                            <li><strong>Stufe 3 (Festung):</strong> Erlaubt das Bauen & Aufrüsten von **Mächtigen Rittern** (Stärke 3).</li>
+                            <li><strong>Stufe 5 (Metropole):</strong> Bringt den blauen Metropolen-Marker (+2 extra SP).</li>
+                        </ul>
+                    </div>
+                    <div class="bg-yellow-50/70 border border-yellow-200 rounded-xl p-4 space-y-2">
+                        <div class="flex items-center gap-2 border-b border-yellow-200 pb-2">
+                            <span class="text-xl">📜</span>
+                            <h4 class="font-bold text-yellow-950 text-sm">Wissenschaft (Papier)</h4>
+                        </div>
+                        <ul class="text-xs text-stone-700 space-y-1">
+                            <li><strong>Stufe 3 (Aquädukt):</strong> Gehst du bei einer Ertragswürfelzahl (außer 7) leer aus, darfst du 1 freien Rohstoff nehmen!</li>
+                            <li><strong>Stufe 5 (Metropole):</strong> Bringt den gelben Metropolen-Marker (+2 extra SP).</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="bg-amber-900 text-amber-50 p-4 rounded-xl border border-amber-700 text-xs space-y-1">
+                    <span class="font-bold text-amber-300 text-sm">Schutzfunktion von Metropolen:</span>
+                    <p>Eine Stadt mit Metropolen-Aufsatz kann durch eine Niederlage beim Barbarenangriff **niemals zerstört oder zurückgestuft** werden!</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- C&K: Knights & Barbarians -->
+        <section id="sec-candk-knights" class="candk-tab-content tab-content hidden space-y-6">
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-amber-200 space-y-6">
+                <div>
+                    <h3 class="font-title font-bold text-xl text-amber-950 mb-1 flex items-center gap-2">
+                        <i data-lucide="shield" class="w-6 h-6 text-blue-700"></i> Das Ritter- & Barbarensystem
+                    </h3>
+                    <p class="text-sm text-stone-600">Ritter verteidigen Catan, blockieren Wege und jagen den Räuber.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                    <div class="bg-blue-50 border border-blue-200 rounded-xl p-4">
+                        <h4 class="font-bold text-blue-950 text-sm mb-1">Einfacher Ritter</h4>
+                        <p class="text-stone-600 mb-2">Stärke 1. Kosten: 1 Erz + 1 Wolle.</p>
+                        <span class="bg-blue-200 text-blue-900 px-2 py-0.5 rounded font-semibold">Aktivierung: 1 Getreide</span>
+                    </div>
+                    <div class="bg-blue-100 border border-blue-300 rounded-xl p-4">
+                        <h4 class="font-bold text-blue-950 text-sm mb-1">Starker Ritter</h4>
+                        <p class="text-stone-600 mb-2">Stärke 2. Upgrade-Kosten: 1 Erz + 1 Wolle.</p>
+                        <span class="bg-blue-300 text-blue-950 px-2 py-0.5 rounded font-semibold">Stärke 2</span>
+                    </div>
+                    <div class="bg-blue-900 text-blue-50 rounded-xl p-4">
+                        <h4 class="font-bold text-blue-200 text-sm mb-1">Mächtiger Ritter</h4>
+                        <p class="text-blue-300/80 mb-2">Stärke 3. Benötigt Politik-Ausbau Stufe 3!</p>
+                        <span class="bg-blue-800 text-blue-200 px-2 py-0.5 rounded font-semibold">Stärke 3</span>
+                    </div>
+                </div>
+
+                <!-- Barbarians step-by-step -->
+                <div class="bg-red-50 border border-red-200 rounded-xl p-5 space-y-3">
+                    <h4 class="font-bold text-red-950 text-base flex items-center gap-2">
+                        <i data-lucide="skull" class="w-5 h-5 text-red-700"></i> Barbarenangriff: Auswertung Schritt für Schritt
+                    </h4>
+                    <div class="space-y-2 text-xs text-red-900">
+                        <div class="p-2 bg-white rounded border border-red-200">
+                            <strong>1. Stärke vergleichen:</strong> Barbarenstärke = Gesamtzahl aller Städte auf dem Spielplan. Ritterstärke = Summe aller <strong>aktiven</strong> Ritter aller Spieler.
+                        </div>
+                        <div class="p-2 bg-white rounded border border-red-200">
+                            <strong>2. Catan siegt (Ritterstärke &ge; Barbaren):</strong> Die Barbaren werden vertrieben! Der Spieler mit den meisten aktiven Ritterpunkten erhält 1 Siegpunktkarte <strong>„Retter Catans“</strong> (+1 SP). Bei Gleichstand ziehen die Betroffenen 1 Fortschrittskarte.
+                        </div>
+                        <div class="p-2 bg-white rounded border border-red-200">
+                            <strong>3. Catan verliert (Ritterstärke &lt; Barbaren):</strong> Die Barbaren verwüsten Catan! Der Spieler mit den <strong>wenigsten aktiven Ritterpunkten</strong> verliert 1 Stadt (sie wird zur Siedlung zurückgestuft). <em>Metropolen sind geschützt!</em>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- C&K: Costs & Calculator -->
+        <section id="sec-candk-costs" class="candk-tab-content tab-content hidden space-y-6">
+            <div class="bg-blue-100/70 border border-blue-200 rounded-2xl p-5 text-stone-800">
+                <h3 class="font-title font-bold text-xl text-blue-950 mb-1 flex items-center gap-2">
+                    <i data-lucide="coins" class="w-6 h-6 text-blue-700"></i> Baukosten & Bedarfsrechner (Städte & Ritter)
+                </h3>
+                <p class="text-sm text-stone-600">Spezieller Baukostenrechner für Gebäude, Ritter und Stadtmauern:</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div class="bg-white rounded-xl p-4 border border-blue-200 shadow-sm">
+                    <h4 class="font-bold text-blue-950 mb-1">Stadtmauer</h4>
+                    <p class="text-xs text-stone-500 mb-2">Erhöht Handkartenlimit bei der 7 um +2 Karten (max. 3 Mauern = 13 Karten Limit).</p>
+                    <div class="text-xs bg-red-50 text-red-800 px-2 py-1 rounded border border-red-200 font-medium">🧱 2x Lehm</div>
+                </div>
+                <div class="bg-white rounded-xl p-4 border border-blue-200 shadow-sm">
+                    <h4 class="font-bold text-blue-950 mb-1">Einfacher Ritter (Stufe 1)</h4>
+                    <p class="text-xs text-stone-500 mb-2">Auf eine freie Straßenkreuzung stellen.</p>
+                    <div class="text-xs flex gap-1">
+                        <span class="bg-slate-100 text-slate-800 px-2 py-0.5 rounded border border-slate-300">🪨 1x Erz</span>
+                        <span class="bg-emerald-50 text-emerald-800 px-2 py-0.5 rounded border border-emerald-200">🐑 1x Wolle</span>
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl p-4 border border-blue-200 shadow-sm">
+                    <h4 class="font-bold text-blue-950 mb-1">Ritter aktivieren</h4>
+                    <p class="text-xs text-stone-500 mb-2">Macht den Ritter bereit für Barbarenangriff oder Aktionen.</p>
+                    <div class="text-xs bg-yellow-50 text-yellow-800 px-2 py-1 rounded border border-yellow-200 font-medium">🌾 1x Getreide</div>
+                </div>
+            </div>
+
+            <!-- C&K Calculator Widget -->
+            <div class="bg-blue-950 text-amber-50 rounded-2xl p-6 shadow-md border border-blue-800">
+                <h4 class="font-title font-bold text-lg text-blue-200 mb-4 flex items-center gap-2">
+                    <i data-lucide="calculator" class="w-5 h-5 text-blue-400"></i> C&K Bedarfsrechner
+                </h4>
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
+                    <div class="bg-blue-900/60 p-3 rounded-xl border border-blue-700/50 flex flex-col items-center">
+                        <span class="text-xs text-blue-200 mb-1">Stadtmauern</span>
+                        <div class="flex items-center gap-2">
+                            <button onclick="changeCkCalc('wall', -1)" class="w-7 h-7 rounded bg-blue-800 hover:bg-blue-700 font-bold">-</button>
+                            <span id="ckc-wall" class="font-bold w-6 text-center">0</span>
+                            <button onclick="changeCkCalc('wall', 1)" class="w-7 h-7 rounded bg-blue-800 hover:bg-blue-700 font-bold">+</button>
+                        </div>
+                    </div>
+                    <div class="bg-blue-900/60 p-3 rounded-xl border border-blue-700/50 flex flex-col items-center">
+                        <span class="text-xs text-blue-200 mb-1">Ritter bauen</span>
+                        <div class="flex items-center gap-2">
+                            <button onclick="changeCkCalc('knight', -1)" class="w-7 h-7 rounded bg-blue-800 hover:bg-blue-700 font-bold">-</button>
+                            <span id="ckc-knight" class="font-bold w-6 text-center">0</span>
+                            <button onclick="changeCkCalc('knight', 1)" class="w-7 h-7 rounded bg-blue-800 hover:bg-blue-700 font-bold">+</button>
+                        </div>
+                    </div>
+                    <div class="bg-blue-900/60 p-3 rounded-xl border border-blue-700/50 flex flex-col items-center">
+                        <span class="text-xs text-blue-200 mb-1">Ritter aufrüsten</span>
+                        <div class="flex items-center gap-2">
+                            <button onclick="changeCkCalc('upgrade', -1)" class="w-7 h-7 rounded bg-blue-800 hover:bg-blue-700 font-bold">-</button>
+                            <span id="ckc-upgrade" class="font-bold w-6 text-center">0</span>
+                            <button onclick="changeCkCalc('upgrade', 1)" class="w-7 h-7 rounded bg-blue-800 hover:bg-blue-700 font-bold">+</button>
+                        </div>
+                    </div>
+                    <div class="bg-blue-900/60 p-3 rounded-xl border border-blue-700/50 flex flex-col items-center">
+                        <span class="text-xs text-blue-200 mb-1">Ritter aktivieren</span>
+                        <div class="flex items-center gap-2">
+                            <button onclick="changeCkCalc('activate', -1)" class="w-7 h-7 rounded bg-blue-800 hover:bg-blue-700 font-bold">-</button>
+                            <span id="ckc-activate" class="font-bold w-6 text-center">0</span>
+                            <button onclick="changeCkCalc('activate', 1)" class="w-7 h-7 rounded bg-blue-800 hover:bg-blue-700 font-bold">+</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-stone-900 p-4 rounded-xl border border-blue-600">
+                    <div class="text-xs uppercase text-blue-300 font-semibold mb-2">Benötigter Materialbedarf gesamt:</div>
+                    <div id="ck-calc-results" class="flex flex-wrap gap-2 text-xs">Noch keine Auswahl.</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- C&K: Points Calculator -->
+        <section id="sec-candk-points" class="candk-tab-content tab-content hidden space-y-6">
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-amber-200">
+                <h3 class="font-title font-bold text-xl text-amber-950 mb-4 flex items-center gap-2">
+                    <i data-lucide="trophy" class="w-6 h-6 text-amber-600"></i> Siegpunkt-Rechner (Städte & Ritter - Ziel: 13 Punkte)
+                </h3>
+                <div class="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-6 text-xs">
+                    <div class="bg-amber-50 p-3 rounded-xl border border-amber-200 flex justify-between items-center">
+                        <div>
+                            <span class="font-bold text-amber-950">Siedlungen</span>
+                            <div class="text-[10px] text-stone-500">1 SP</div>
+                        </div>
+                        <div class="flex gap-1.5">
+                            <button onclick="changeCkPt('settlements', -1)" class="w-6 h-6 rounded bg-amber-700 text-white font-bold">-</button>
+                            <span id="cp-settlements" class="font-bold w-5 text-center">2</span>
+                            <button onclick="changeCkPt('settlements', 1)" class="w-6 h-6 rounded bg-amber-700 text-white font-bold">+</button>
+                        </div>
+                    </div>
+                    <div class="bg-amber-50 p-3 rounded-xl border border-amber-200 flex justify-between items-center">
+                        <div>
+                            <span class="font-bold text-amber-950">Städte</span>
+                            <div class="text-[10px] text-stone-500">2 SP</div>
+                        </div>
+                        <div class="flex gap-1.5">
+                            <button onclick="changeCkPt('cities', -1)" class="w-6 h-6 rounded bg-amber-700 text-white font-bold">-</button>
+                            <span id="cp-cities" class="font-bold w-5 text-center">0</span>
+                            <button onclick="changeCkPt('cities', 1)" class="w-6 h-6 rounded bg-amber-700 text-white font-bold">+</button>
+                        </div>
+                    </div>
+                    <div class="bg-amber-50 p-3 rounded-xl border border-amber-200 flex justify-between items-center">
+                        <div>
+                            <span class="font-bold text-amber-950">Metropolen</span>
+                            <div class="text-[10px] text-stone-500">4 SP total (2+2)</div>
+                        </div>
+                        <div class="flex gap-1.5">
+                            <button onclick="changeCkPt('metropolises', -1)" class="w-6 h-6 rounded bg-amber-700 text-white font-bold">-</button>
+                            <span id="cp-metropolises" class="font-bold w-5 text-center">0</span>
+                            <button onclick="changeCkPt('metropolises', 1)" class="w-6 h-6 rounded bg-amber-700 text-white font-bold">+</button>
+                        </div>
+                    </div>
+                    <div class="bg-amber-50 p-3 rounded-xl border border-amber-200 flex justify-between items-center">
+                        <div>
+                            <span class="font-bold text-amber-950">Retter Catans</span>
+                            <div class="text-[10px] text-stone-500">1 SP pro Karte</div>
+                        </div>
+                        <div class="flex gap-1.5">
+                            <button onclick="changeCkPt('defenders', -1)" class="w-6 h-6 rounded bg-amber-700 text-white font-bold">-</button>
+                            <span id="cp-defenders" class="font-bold w-5 text-center">0</span>
+                            <button onclick="changeCkPt('defenders', 1)" class="w-6 h-6 rounded bg-amber-700 text-white font-bold">+</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex flex-wrap gap-4 mb-6 text-xs p-4 bg-blue-50/50 rounded-xl border border-blue-200">
+                    <label class="flex items-center gap-2 cursor-pointer font-bold text-blue-950">
+                        <input type="checkbox" id="cp-road" onchange="calcCkPoints()" class="w-4 h-4 accent-amber-600 rounded"> 
+                        🛣️ Längste Handelsstraße (+2 SP)
+                    </label>
+                    <label class="flex items-center gap-2 cursor-pointer font-bold text-blue-950">
+                        <input type="checkbox" id="cp-merchant" onchange="calcCkPoints()" class="w-4 h-4 accent-amber-600 rounded"> 
+                        ⚖️ Händler-Figur (+1 SP)
+                    </label>
+                </div>
+                <div class="bg-blue-950 text-amber-50 p-5 rounded-xl flex justify-between items-center">
+                    <div>
+                        <span class="text-xs uppercase text-blue-300 font-bold tracking-wider">Aktueller Punktestand (Ziel: 13 SP)</span>
+                        <div id="cp-status" class="text-xs text-blue-200 mt-0.5">Noch 11 Punkte bis zum Sieg.</div>
+                    </div>
+                    <div id="cp-total" class="font-title font-black text-4xl text-blue-300">2</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- C&K: FAQ -->
+        <section id="sec-candk-faq" class="candk-tab-content tab-content hidden space-y-4">
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-amber-200 space-y-4">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-amber-100">
+                    <div>
+                        <h3 class="font-title font-bold text-xl text-amber-950">FAQ & Sonderregeln (Städte & Ritter)</h3>
+                        <p class="text-xs text-stone-500">Antworten auf die häufigsten Zweifelsfälle am Spieltisch:</p>
+                    </div>
+                    <div class="flex flex-wrap gap-1.5" id="faq-filters-candk">
+                        <button onclick="filterCkFaq('all')" class="faq-filter-btn active px-2.5 py-1 text-xs rounded-lg border border-amber-300 font-semibold transition-all">Alle</button>
+                        <button onclick="filterCkFaq('candk-knights')" class="faq-filter-btn px-2.5 py-1 text-xs rounded-lg border border-amber-300 font-semibold transition-all">Ritter & Barbaren</button>
+                        <button onclick="filterCkFaq('candk-cards')" class="faq-filter-btn px-2.5 py-1 text-xs rounded-lg border border-amber-300 font-semibold transition-all">Fortschrittskarten</button>
+                        <button onclick="filterCkFaq('candk-city')" class="faq-filter-btn px-2.5 py-1 text-xs rounded-lg border border-amber-300 font-semibold transition-all">Städte & Metropolen</button>
+                    </div>
+                </div>
+
+                <div class="space-y-3" id="faq-container-candk">
+                    <!-- Dynamic rendering via JS for C&K FAQ -->
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-amber-950 text-amber-400 text-xs py-5 border-t border-amber-800 mt-auto">
+        <div class="max-w-6xl mx-auto px-4 text-center space-y-1">
+            <p class="font-medium">Interaktiver Catan Regelbegleiter &bull; Basisspiel & Städte und Ritter</p>
+            <p class="text-amber-500/60 text-[11px]">Catan ist ein eingetragenes Warenzeichen der Catan GmbH. Diese Anwendung dient als Regelführer am Spieltisch.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        lucide.createIcons();
+
+        let currentMode = 'base';
+        let currentBaseFaqFilter = 'all';
+        let currentCkFaqFilter = 'all';
+
+        const navTabs = {
+            base: [
+                { id: 'base-overview', label: 'Übersicht', icon: 'book-open' },
+                { id: 'base-turn', label: 'Zugablauf & Handel', icon: 'play-circle' },
+                { id: 'base-costs', label: 'Baukosten & Rechner', icon: 'coins' },
+                { id: 'base-points', label: 'Siegpunkt-Tracker', icon: 'trophy' },
+                { id: 'base-faq', label: 'Erweiterte FAQ', icon: 'help-circle' }
+            ],
+            candk: [
+                { id: 'candk-overview', label: 'S&R Übersicht', icon: 'shield' },
+                { id: 'candk-turn', label: 'Zugablauf S&R', icon: 'rotate-cw' },
+                { id: 'candk-developments', label: 'Metropolen & Stufen', icon: 'trending-up' },
+                { id: 'candk-knights', label: 'Ritter & Barbaren', icon: 'sword' },
+                { id: 'candk-costs', label: 'S&R Baukosten', icon: 'coins' },
+                { id: 'candk-points', label: 'S&R Siegpunkte', icon: 'trophy' },
+                { id: 'candk-faq', label: 'S&R FAQ', icon: 'help-circle' }
+            ]
+        };
+
+        // Master FAQ Data
+        const baseFaqData = [
+            {
+                cat: "trade",
+                q: "Wer darf mit wem handeln?",
+                a: "Ausschließlich der **aktive Spieler** (derjenige, der am Zug ist) darf Handelsangebote machen und annehmen. Passiv mitspielende Personen dürfen NIEMALS untereinander handeln! Dreieckshandel über den aktiven Spieler ist ebenfalls untersagt."
+            },
+            {
+                cat: "trade",
+                q: "Darf man Rohstoffe verschenken oder Versprechungen machen?",
+                a: "Nein! Handelsgeschäfte müssen immer Rohstoffe gegen Rohstoffe beinhalten (mindestens 1 Rohstoff pro Seite). Schenkungen ohne Gegenleistung sowie Zukunftsversprechungen ('Ich gebe dir Holz, wenn du mich nächste Runde nicht überfällst') sind regeltechnisch unwirksam."
+            },
+            {
+                cat: "trade",
+                q: "Kann ich den Hafen eines Mitspielers nutzen?",
+                a: "Nein. Ein Hafen kann ausschließlich von dem Spieler genutzt werden, der eine eigene Siedlung oder Stadt an der entsprechenden Hafenecke gebaut hat."
+            },
+            {
+                cat: "turn",
+                q: "Wann werden Siegpunkte aufgedeckt und der Sieg verkündet?",
+                a: "Siegpunkte auf Entwicklungskarten bleiben geheim, bis ein Spieler in seinem **eigenen Spielzug** (inklusive seiner Handkarten) 10 Siegpunkte erreicht. Er deckt sie dann sofort auf und gewinnt das Spiel. Man kann nicht im Zug eines Mitspielers gewinnen!"
+            },
+            {
+                cat: "turn",
+                q: "Was passiert bei Ressourcenknappheit (Bank is leer)?",
+                a: "Wenn bei einem Würfelwurf mehr Rohstoffe einer Sorte ausgezahlt werden müssten, als noch Karten in der Bank liegen, erhält **KEINER** der betroffenen Spieler diese Rohstoffsorte! Ausnahmen gibt es nur, wenn die Karten exakt reichen."
+            },
+            {
+                cat: "robber",
+                q: "Ab wann muss man Karten bei der 7 abgeben?",
+                a: "Sobald ein Spieler **mehr als 7 Handkarten** (also 8 oder mehr) besitzt, muss er bei einer gewürfelten 7 die Hälfte seiner Handkarten (abgerundet) wählen und in den Vorrat abgeben."
+            },
+            {
+                cat: "robber",
+                q: "Darf man den Räuber auf ein Wüstenfeld oder ein Feld ohne Gebäude stellen?",
+                a: "Ja, der Räuber darf auf jedes beliebige Landfeld versetzt werden. Steht dort keine gegnerische Siedlung/Stadt, stiehlt man lediglich keine Karte."
+            },
+            {
+                cat: "building",
+                q: "Unterbricht eine Siedlung die 'Längste Handelsstraße'?",
+                a: "Ja! Baut ein Mitspieler eine Siedlung auf einer freien Kreuzung innerhalb deiner durchgehenden Straßenlinie, wird deine Handelsstraße an dieser Stelle unterbrochen und in zwei Abschnitte getrennt."
+            }
+        ];
+
+        const ckFaqData = [
+            {
+                cat: "candk-knights",
+                q: "Wer verliert eine Stadt beim Barbarenangriff?",
+                a: "Derjenige Spieler, der beim Angriff die **wenigsten aktiven Ritterpunkte** aufbieten kann, verliert 1 Stadt (wird zur Siedlung zurückgestuft). Haben mehrere Spieler gleich wenige Ritterpunkte, verlieren BEIDE eine Stadt. Metropolen sind davor geschützt!"
+            },
+            {
+                cat: "candk-knights",
+                q: "Wann erhält man die Karte 'Retter Catans'?",
+                a: "Wenn die aktiven Ritter aller Spieler zusammen die Barbaren abwehren (Ritterstärke >= Städte), erhält der Spieler mit den **meisten aktiven Ritterpunkten** 1 Siegpunktkarte. Bei Gleichstand erhält niemand den Siegpunkt, stattdessen ziehen die Betroffenen 1 Fortschrittskarte."
+            },
+            {
+                cat: "candk-cards",
+                q: "Wann muss die Fortschrittskarte 'Alchemie' gespielt werden?",
+                a: "Die Alchemie-Karte MUSS ganz am Anfang deines Zuges gespielt werden, **bevor du gewürfelt hast**. Du bestimmst dann das Ergebnis der beiden Zahlenwürfel. Der rote Ereigniswürfel wird danach ganz normal gewürfelt."
+            },
+            {
+                cat: "candk-city",
+                q: "Können Metropolen durch Barbaren zerstört werden?",
+                a: "Nein. Metropolen besitzen vollständigen Schutz vor Barbarenangriffen und können niemals zu Siedlungen zurückgestuft werden."
+            },
+            {
+                cat: "candk-city",
+                q: "Was bringt die Händler-Figur?",
+                a: "Wer die Fortschrittskarte 'Händler' ausspielt, setzt die Händlerfigur auf ein Landfeld an einer eigenen Siedlung/Stadt. Dieses Feld tauscht Rohstoffe nun 2:1 an der Bank. Solange du den Händler besitzt, bringt er dir zudem **+1 Siegpunkt**."
+            }
+        ];
+
+        function setGameMode(mode) {
+            currentMode = mode;
+            document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`mode-${mode}`).classList.add('active');
+
+            renderNavTabs();
+            switchTab(navTabs[mode][0].id);
+        }
+
+        function renderNavTabs() {
+            const container = document.getElementById('nav-tabs-container');
+            const tabs = navTabs[currentMode];
+
+            container.innerHTML = tabs.map((tab, idx) => `
+                <button onclick="switchTab('${tab.id}')" id="tab-${tab.id}" class="tab-btn px-3 py-2 rounded-lg flex items-center gap-1.5 whitespace-nowrap transition-all ${idx === 0 ? 'active' : ''}">
+                    <i data-lucide="${tab.icon}" class="w-4 h-4"></i> ${tab.label}
+                </button>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+
+            const target = document.getElementById(`sec-${tabId}`);
+            if (target) target.classList.remove('hidden');
+
+            const btn = document.getElementById(`tab-${tabId}`);
+            if (btn) btn.classList.add('active');
+
+            if (tabId === 'base-faq') renderFaqBase();
+            if (tabId === 'candk-faq') renderFaqCk();
+
+            document.getElementById('search-results-panel').classList.add('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function renderFaqBase() {
+            const container = document.getElementById('faq-container-base');
+            const filtered = currentBaseFaqFilter === 'all' 
+                ? baseFaqData 
+                : baseFaqData.filter(item => item.cat === currentBaseFaqFilter);
+
+            container.innerHTML = filtered.map(item => `
+                <details class="border border-amber-200 rounded-xl p-3.5 bg-amber-50/50 hover:bg-amber-50 transition-all group">
+                    <summary class="font-bold cursor-pointer text-amber-950 text-sm flex items-center justify-between">
+                        <span>${item.q}</span>
+                        <i data-lucide="chevron-down" class="w-4 h-4 text-amber-700 group-open:rotate-180 transition-transform"></i>
+                    </summary>
+                    <div class="mt-2 text-xs text-stone-700 leading-relaxed border-t border-amber-200/60 pt-2">
+                        ${item.a.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')}
+                    </div>
+                </details>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        function filterFaq(cat) {
+            currentBaseFaqFilter = cat;
+            document.querySelectorAll('#faq-filters-base .faq-filter-btn').forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
+            renderFaqBase();
+        }
+
+        function renderFaqCk() {
+            const container = document.getElementById('faq-container-candk');
+            const filtered = currentCkFaqFilter === 'all' 
+                ? ckFaqData 
+                : ckFaqData.filter(item => item.cat === currentCkFaqFilter);
+
+            container.innerHTML = filtered.map(item => `
+                <details class="border border-amber-200 rounded-xl p-3.5 bg-amber-50/50 hover:bg-amber-50 transition-all group">
+                    <summary class="font-bold cursor-pointer text-amber-950 text-sm flex items-center justify-between">
+                        <span>${item.q}</span>
+                        <i data-lucide="chevron-down" class="w-4 h-4 text-amber-700 group-open:rotate-180 transition-transform"></i>
+                    </summary>
+                    <div class="mt-2 text-xs text-stone-700 leading-relaxed border-t border-amber-200/60 pt-2">
+                        ${item.a.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')}
+                    </div>
+                </details>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        function filterCkFaq(cat) {
+            currentCkFaqFilter = cat;
+            document.querySelectorAll('#faq-filters-candk .faq-filter-btn').forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
+            renderFaqCk();
+        }
+
+        // Global Search Engine
+        function handleSearch(query) {
+            const panel = document.getElementById('search-results-panel');
+            const list = document.getElementById('search-results-list');
+            const count = document.getElementById('search-count');
+            const queryDisplay = document.getElementById('search-query-display');
+            const clearBtn = document.getElementById('clear-search');
+
+            const clean = query.trim().toLowerCase();
+            if (clean === '') {
+                panel.classList.add('hidden');
+                clearBtn.classList.add('hidden');
+                return;
+            }
+
+            clearBtn.classList.remove('hidden');
+            panel.classList.remove('hidden');
+            queryDisplay.textContent = `"${query}"`;
+
+            const allFaqs = [
+                ...baseFaqData.map(f => ({ ...f, tab: 'base-faq', mode: 'base' })),
+                ...ckFaqData.map(f => ({ ...f, tab: 'candk-faq', mode: 'candk' }))
+            ];
+
+            const filtered = allFaqs.filter(item => item.q.toLowerCase().includes(clean) || item.a.toLowerCase().includes(clean));
+            count.textContent = filtered.length;
+
+            if (filtered.length === 0) {
+                list.innerHTML = `<div class="text-stone-500 text-xs py-4">Keine passenden Regelfragen gefunden.</div>`;
+                return;
+            }
+
+            list.innerHTML = filtered.map(item => `
+                <div class="p-3 bg-amber-50/80 rounded-xl border border-amber-200 cursor-pointer hover:border-amber-400 transition-all" onclick="jumpToSearch('${item.mode}', '${item.tab}')">
+                    <div class="flex justify-between font-bold text-amber-950 text-xs">
+                        <span>${item.q}</span>
+                        <span class="text-[10px] bg-amber-200 text-amber-900 px-2 py-0.5 rounded uppercase font-semibold">${item.mode === 'base' ? 'Basis' : 'S&R'}</span>
+                    </div>
+                    <p class="text-xs text-stone-600 mt-1 line-clamp-2">${item.a.replace(/\*\*(.*?)\*\*/g, '$1')}</p>
+                </div>
+            `).join('');
+        }
+
+        function jumpToSearch(mode, tabId) {
+            setGameMode(mode);
+            switchTab(tabId);
+        }
+
+        function clearSearch() {
+            document.getElementById('global-search').value = '';
+            document.getElementById('search-results-panel').classList.add('hidden');
+            document.getElementById('clear-search').classList.add('hidden');
+        }
+
+        // Base Calculator
+        const baseCalc = { road: 0, settlement: 0, city: 0, devCard: 0 };
+        function changeBaseCalc(type, delta) {
+            baseCalc[type] = Math.max(0, baseCalc[type] + delta);
+            document.getElementById(`bc-${type}`).textContent = baseCalc[type];
+            updateBaseCalcTotals();
+        }
+        function updateBaseCalcTotals() {
+            const totals = { 
+                brick: baseCalc.road + baseCalc.settlement, 
+                wood: baseCalc.road + baseCalc.settlement, 
+                wool: baseCalc.settlement + baseCalc.devCard, 
+                wheat: baseCalc.settlement + (baseCalc.city*2) + baseCalc.devCard, 
+                ore: (baseCalc.city*3) + baseCalc.devCard 
+            };
+            const sum = Object.values(totals).reduce((a,b)=>a+b, 0);
+            const container = document.getElementById('base-calc-results');
+            if (sum === 0) { container.innerHTML = 'Noch keine Auswahl.'; return; }
+            let html = '';
+            if(totals.brick>0) html += `<span class="bg-red-900/80 text-red-100 px-2.5 py-1 rounded-md">🧱 ${totals.brick} Lehm</span>`;
+            if(totals.wood>0) html += `<span class="bg-amber-900/80 text-amber-100 px-2.5 py-1 rounded-md">🪵 ${totals.wood} Holz</span>`;
+            if(totals.wool>0) html += `<span class="bg-emerald-900/80 text-emerald-100 px-2.5 py-1 rounded-md">🐑 ${totals.wool} Wolle</span>`;
+            if(totals.wheat>0) html += `<span class="bg-yellow-900/80 text-yellow-100 px-2.5 py-1 rounded-md">🌾 ${totals.wheat} Getreide</span>`;
+            if(totals.ore>0) html += `<span class="bg-slate-800 text-slate-100 px-2.5 py-1 rounded-md">🪨 ${totals.ore} Erz</span>`;
+            container.innerHTML = html;
+        }
+
+        // Base Points Calculator
+        const basePts = { settlements: 2, cities: 0, cards: 0 };
+        function changeBasePt(type, delta) {
+            basePts[type] = Math.max(0, basePts[type] + delta);
+            document.getElementById(`bp-${type}`).textContent = basePts[type];
+            calcBasePoints();
+        }
+        function calcBasePoints() {
+            const road = document.getElementById('bp-road').checked ? 2 : 0;
+            const knights = document.getElementById('bp-knights').checked ? 2 : 0;
+            const total = (basePts.settlements * 1) + (basePts.cities * 2) + (basePts.cards * 1) + road + knights;
+            document.getElementById('bp-total').textContent = total;
+            const status = document.getElementById('bp-status');
+            if (total >= 10) status.innerHTML = '<span class="text-emerald-400 font-bold">🎉 SIEG! Du hast 10 Punkte erreicht!</span>';
+            else status.textContent = `Noch ${10 - total} Punkte bis zum Sieg (10 SP).`;
+        }
+
+        // C&K Calculator
+        const ckCalc = { wall: 0, knight: 0, upgrade: 0, activate: 0 };
+        function changeCkCalc(type, delta) {
+            ckCalc[type] = Math.max(0, ckCalc[type] + delta);
+            document.getElementById(`ckc-${type}`).textContent = ckCalc[type];
+            updateCkCalcTotals();
+        }
+        function updateCkCalcTotals() {
+            const brick = ckCalc.wall * 2;
+            const ore = ckCalc.knight + ckCalc.upgrade;
+            const wool = ckCalc.knight + ckCalc.upgrade;
+            const wheat = ckCalc.activate;
+            const sum = brick + ore + wool + wheat;
+            const container = document.getElementById('ck-calc-results');
+            if (sum === 0) { container.innerHTML = 'Noch keine Auswahl.'; return; }
+            let html = '';
+            if(brick>0) html += `<span class="bg-red-900/80 text-red-100 px-2.5 py-1 rounded-md">🧱 ${brick} Lehm</span>`;
+            if(ore>0) html += `<span class="bg-slate-800 text-slate-100 px-2.5 py-1 rounded-md">🪨 ${ore} Erz</span>`;
+            if(wool>0) html += `<span class="bg-emerald-900/80 text-emerald-100 px-2.5 py-1 rounded-md">🐑 ${wool} Wolle</span>`;
+            if(wheat>0) html += `<span class="bg-yellow-900/80 text-yellow-100 px-2.5 py-1 rounded-md">🌾 ${wheat} Getreide</span>`;
+            container.innerHTML = html;
+        }
+
+        // C&K Points Calculator
+        const ckPts = { settlements: 2, cities: 0, metropolises: 0, defenders: 0 };
+        function changeCkPt(type, delta) {
+            ckPts[type] = Math.max(0, ckPts[type] + delta);
+            document.getElementById(`cp-${type}`).textContent = ckPts[type];
+            calcCkPoints();
+        }
+        function calcCkPoints() {
+            const road = document.getElementById('cp-road').checked ? 2 : 0;
+            const merchant = document.getElementById('cp-merchant').checked ? 1 : 0;
+            const total = (ckPts.settlements * 1) + (ckPts.cities * 2) + (ckPts.metropolises * 4) + (ckPts.defenders * 1) + road + merchant;
+            document.getElementById('cp-total').textContent = total;
+            const status = document.getElementById('cp-status');
+            if (total >= 13) status.innerHTML = '<span class="text-emerald-400 font-bold">🎉 SIEG! Du hast 13 Punkte in S&R erreicht!</span>';
+            else status.textContent = `Noch ${13 - total} Punkte bis zum Sieg (13 SP).`;
+        }
+
+        // Initialize App
+        renderNavTabs();
+        renderFaqBase();
+    </script>
+</body>
+</html>

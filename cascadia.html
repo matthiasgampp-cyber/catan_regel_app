@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="de" class="h-full bg-emerald-50">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cascadia - Regelbegleiter</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        title: ['Cinzel', 'serif'],
+                        sans: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #ECFDF5; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #059669; border-radius: 9999px; }
+        .tab-btn.active { background-color: #065F46; color: #FFFFFF; }
+    </style>
+</head>
+<body class="h-full font-sans text-stone-800 flex flex-col antialiased selection:bg-emerald-200 selection:text-emerald-900">
+
+    <!-- Header -->
+    <header class="bg-gradient-to-r from-emerald-950 via-emerald-900 to-stone-900 text-emerald-100 shadow-lg border-b-4 border-emerald-600 sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 py-3 sm:px-6 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-lg bg-emerald-500/20 border-2 border-emerald-400/40 flex items-center justify-center text-emerald-400 font-bold text-xl">
+                    🌲
+                </div>
+                <div>
+                    <h1 class="font-title font-bold text-xl tracking-wider text-emerald-50">CASCADIA</h1>
+                    <p class="text-xs text-emerald-300/80 font-medium">Interaktiver Regelbegleiter</p>
+                </div>
+            </div>
+            <a href="index.html" class="px-3 py-1.5 rounded-lg bg-emerald-900/80 border border-emerald-700 text-xs font-bold text-emerald-200 hover:text-white flex items-center gap-2 transition-all">
+                <i data-lucide="arrow-left" class="w-4 h-4"></i> Spiele-Hub
+            </a>
+        </div>
+    </header>
+
+    <!-- Nav -->
+    <nav class="bg-emerald-950/10 border-b border-emerald-200 text-emerald-900 text-xs sm:text-sm font-medium sticky top-[65px] z-40 shadow-sm">
+        <div class="max-w-6xl mx-auto px-2 flex justify-start gap-1 overflow-x-auto custom-scrollbar py-2">
+            <button onclick="switchTab('overview')" id="tab-overview" class="tab-btn active px-3 py-2 rounded-lg whitespace-nowrap font-semibold transition-all">Übersicht & Ziel</button>
+            <button onclick="switchTab('turn')" id="tab-turn" class="tab-btn px-3 py-2 rounded-lg whitespace-nowrap font-semibold transition-all">Spielzug & Drafting</button>
+            <button onclick="switchTab('animals')" id="tab-animals" class="tab-btn px-3 py-2 rounded-lg whitespace-nowrap font-semibold transition-all">Wildtiere & Wertung</button>
+        </div>
+    </nav>
+
+    <!-- Content -->
+    <main class="flex-grow max-w-6xl w-full mx-auto p-4 sm:p-6 mb-12 space-y-6">
+        
+        <section id="sec-overview" class="tab-content space-y-4">
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-emerald-200 space-y-4">
+                <h3 class="font-title font-bold text-xl text-emerald-950">Über Cascadia</h3>
+                <p class="text-sm text-stone-600 leading-relaxed">
+                    Erschaffe das harmonischste Ökosystem im pazifischen Nordwesten. Kombiniere Habitat-Plättchen (Gebirge, Wald, Prärie, Feuchtgebiet, Fluss) geschickt miteinander und siedle bedrohte Wildtierarten (Bären, Wapitis, Habichte, Füchse, Lachse) an.
+                </p>
+            </div>
+        </section>
+
+        <section id="sec-turn" class="tab-content hidden space-y-4">
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-emerald-200 space-y-4">
+                <h3 class="font-title font-bold text-xl text-emerald-950">Ablauf eines Spielzugs</h3>
+                <ol class="list-decimal pl-4 text-xs text-stone-700 space-y-2">
+                    <li><strong>Wähle ein Paar:</strong> Nimm 1 Habitat-Plättchen und 1 Wildtier-Token aus der offenen Auslage.</li>
+                    <li><strong>Habitat anlegen:</strong> Platziere das Plättchen passend an dein wachsendes Gebiet.</li>
+                    <li><strong>Wildtier platzieren:</strong> Setze das Tier auf ein Plättchen mit passendem Tiersymbol (nur 1 Tier pro Plättchen).</li>
+                    <li><strong>Pinienzapfen nutzen:</strong> Setze Zapfen ein, um Token in der Auslage zu manipulieren oder neu zu ziehen.</li>
+                </ol>
+            </div>
+        </section>
+
+        <section id="sec-animals" class="tab-content hidden space-y-4">
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-emerald-200 space-y-4">
+                <h3 class="font-title font-bold text-xl text-emerald-950">Die 5 Wildtierarten</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                    <div class="p-3 bg-emerald-50 rounded-xl border border-emerald-200"><strong>Bären:</strong> Lieben es, in Paaren (Familien) zu leben.</div>
+                    <div class="p-3 bg-emerald-50 rounded-xl border border-emerald-200"><strong>Wapitis:</strong> Bilden große Herden in langen Linien.</div>
+                    <div class="p-3 bg-emerald-50 rounded-xl border border-emerald-200"><strong>Habichte:</strong> Mögen Einsamkeit (scheuen andere Habichte als direkte Nachbarn).</div>
+                    <div class="p-3 bg-emerald-50 rounded-xl border border-emerald-200"><strong>Lachse:</strong> Bilden fließende Flüsse/Schwärme.</div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-stone-900 text-emerald-400 text-xs py-5 border-t border-stone-800 mt-auto">
+        <div class="max-w-6xl mx-auto px-4 text-center">Cascadia &bull; Regelbegleiter</div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`sec-${tabId}`).classList.remove('hidden');
+            document.getElementById(`tab-${tabId}`).classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>

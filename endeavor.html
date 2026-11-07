@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="de" class="h-full bg-blue-50">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Endeavor: Die Tiefsee - Regelbegleiter</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        title: ['Cinzel', 'serif'],
+                        sans: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #EFF6FF; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #3B82F6; border-radius: 9999px; }
+        .tab-btn.active { background-color: #1E3A8A; color: #FFFFFF; }
+    </style>
+</head>
+<body class="h-full font-sans text-stone-800 flex flex-col antialiased selection:bg-blue-200 selection:text-blue-900">
+
+    <!-- Header -->
+    <header class="bg-gradient-to-r from-blue-950 via-blue-900 to-stone-900 text-blue-100 shadow-lg border-b-4 border-blue-600 sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4 py-3 sm:px-6 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-lg bg-blue-500/20 border-2 border-blue-400/40 flex items-center justify-center text-blue-400 font-bold text-xl">
+                    🌊
+                </div>
+                <div>
+                    <h1 class="font-title font-bold text-xl tracking-wider text-blue-50">ENDEAVOR: DIE TIEFSEE</h1>
+                    <p class="text-xs text-blue-300/80 font-medium">Interaktiver Regelbegleiter</p>
+                </div>
+            </div>
+            <a href="index.html" class="px-3 py-1.5 rounded-lg bg-blue-900/80 border border-blue-700 text-xs font-bold text-blue-200 hover:text-white flex items-center gap-2 transition-all shadow-inner">
+                <i data-lucide="arrow-left" class="w-4 h-4"></i> Spiele-Hub
+            </a>
+        </div>
+    </header>
+
+    <!-- Nav -->
+    <nav class="bg-blue-950/10 border-b border-blue-200 text-blue-900 text-xs sm:text-sm font-medium sticky top-[65px] z-40 shadow-sm">
+        <div class="max-w-6xl mx-auto px-2 flex justify-start gap-1 overflow-x-auto custom-scrollbar py-2">
+            <button onclick="switchTab('overview')" id="tab-overview" class="tab-btn active px-3 py-2 rounded-lg whitespace-nowrap font-semibold transition-all">Übersicht & Ziel</button>
+            <button onclick="switchTab('turn')" id="tab-turn" class="tab-btn px-3 py-2 rounded-lg whitespace-nowrap font-semibold transition-all">Detaillierter Rundenablauf</button>
+            <button onclick="switchTab('actions')" id="tab-actions" class="tab-btn px-3 py-2 rounded-lg whitespace-nowrap font-semibold transition-all">Spezialisierungen & Aktionen</button>
+            <button onclick="switchTab('scoring')" id="tab-scoring" class="tab-btn px-3 py-2 rounded-lg whitespace-nowrap font-semibold transition-all">Tiefsee, Schächte & Wertung</button>
+        </div>
+    </nav>
+
+    <!-- Content -->
+    <main class="flex-grow max-w-6xl w-full mx-auto p-4 sm:p-6 mb-12 space-y-6">
+        
+        <!-- Tab 1: Übersicht -->
+        <section id="sec-overview" class="tab-content space-y-6">
+            <div class="bg-gradient-to-br from-blue-900 to-blue-950 text-blue-50 rounded-2xl p-6 shadow-md border border-blue-700 flex flex-col md:flex-row items-center justify-between gap-6">
+                <div class="space-y-2">
+                    <span class="px-3 py-1 bg-blue-500/30 text-blue-300 rounded-full text-xs font-semibold uppercase tracking-wider border border-blue-400/30">Strategiespiel</span>
+                    <h2 class="font-title font-bold text-2xl text-blue-100">Das Ziel von Endeavor: Die Tiefsee</h2>
+                    <p class="text-blue-200/90 text-sm leading-relaxed max-w-2xl">
+                        Über mehrere Runden hinweg leitest du ein marines Forschungsinstitut. Du bildest Crew-Mitglieder aus, erweiterst deine Spezialisierungsleisten, tauchst zu Unterwasser-Regionen ab, errichtest Meeresschutzgebiete und verbindest Tiefseeschächte.
+                    </p>
+                </div>
+                <div class="flex-shrink-0 bg-blue-950/80 p-4 rounded-xl border border-blue-500/50 text-center min-w-[140px]">
+                    <div class="font-title font-black text-3xl text-blue-400">Runde 7</div>
+                    <div class="text-xs text-blue-200 font-medium mt-1">Ende des Spiels nach Runde 7</div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="bg-white rounded-xl p-5 shadow-sm border border-blue-200 space-y-2">
+                    <div class="flex items-center gap-2 text-blue-950 font-bold text-sm">
+                        <i data-lucide="users" class="w-5 h-5 text-blue-600"></i> Crew-Management
+                    </div>
+                    <p class="text-xs text-stone-600">Deine Arbeiter (Crew-Marker) werden auf deinen Leisten platziert und jede Runde wieder reaktiviert.</p>
+                </div>
+                <div class="bg-white rounded-xl p-5 shadow-sm border border-blue-200 space-y-2">
+                    <div class="flex items-center gap-2 text-blue-950 font-bold text-sm">
+                        <i data-lucide="anchor" class="w-5 h-5 text-blue-600"></i> Tauchgänge & Biologie
+                    </div>
+                    <p class="text-xs text-stone-600">Erforsche Tiefseeregionen, erfülle Meeresbiologie-Projekte und sammle wertvolle Entdeckungsplättchen.</p>
+                </div>
+                <div class="bg-white rounded-xl p-5 shadow-sm border border-blue-200 space-y-2">
+                    <div class="flex items-center gap-2 text-blue-950 font-bold text-sm">
+                        <i data-lucide="network" class="w-5 h-5 text-blue-600"></i> Infrastruktur
+                    </div>
+                    <p class="text-xs text-blue-900">Verbinde Schächte auf dem Spielplan, um Netzwerke aufzubauen und Siegpunkte zu maximieren.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tab 2: Rundenablauf -->
+        <section id="sec-turn" class="tab-content hidden space-y-6">
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-blue-200 space-y-6">
+                <div>
+                    <h3 class="font-title font-bold text-xl text-blue-950 mb-1 flex items-center gap-2">
+                        <i data-lucide="rotate-cw" class="w-6 h-6 text-blue-600"></i> Die 4 Phasen einer Runde
+                    </h3>
+                    <p class="text-sm text-stone-600">Jede der 7 Spielrunden läuft exakt in dieser Reihenfolge ab:</p>
+                </div>
+
+                <div class="space-y-4">
+                    <div class="p-4 bg-blue-50 rounded-xl border border-blue-200">
+                        <span class="text-xs font-bold text-blue-900 uppercase tracking-wide">Phase 1</span>
+                        <h4 class="font-bold text-stone-900 text-base mb-1">Bergungsphase (Retrieve)</h4>
+                        <p class="text-xs text-stone-600">Hole deine eingesetzten Crew-Marker von den Aktionsfeldern auf dem Spielplan zurück auf dein Spielertableau. Generiere Einkommen basierend auf deiner freigeschalteten Infrastruktur.</p>
+                    </div>
+
+                    <div class="p-4 bg-blue-50 rounded-xl border border-blue-200">
+                        <span class="text-xs font-bold text-blue-900 uppercase tracking-wide">Phase 2</span>
+                        <h4 class="font-bold text-stone-900 text-base mb-1">Bietphase (Bid)</h4>
+                        <p class="text-xs text-stone-600">Setze Einflussmarker (oder entsprechende Ressourcen) ein, um in der Spielerreihenfolge aufzusteigen und dir begehrte Spezialkarten oder Startpositionen für die Runde zu sichern.</p>
+                    </div>
+
+                    <div class="p-4 bg-blue-500/10 rounded-xl border border-blue-300">
+                        <span class="text-xs font-bold text-blue-950 uppercase tracking-wide">Phase 3</span>
+                        <h4 class="font-bold text-stone-900 text-base mb-1">Aktionsphase (Action)</h4>
+                        <p class="text-xs text-stone-600 mb-2">Im Uhrzeigersinn setzen die Spieler reihum ihre Crew-Marker ein, um Aktionen auszuführen. Du kannst pro Zug in der Regel 1 Aktion durchführen, bis alle Spieler passen:</p>
+                        <ul class="list-disc pl-4 text-xs text-stone-700 space-y-1">
+                            <li><strong>Crew einsetzen:</strong> Platziere einen Arbeiter von einer deiner Leisten auf ein freies Aktionsfeld.</li>
+                            <li><strong>Aktionen ausführen:</strong> Tauchen, Spezialisierungen steigern, Schächte bauen, Karten erwerben oder Meeresbiologie-Projekte unterstützen.</li>
+                        </ul>
+                    </div>
+
+                    <div class="p-4 bg-stone-100 rounded-xl border border-stone-300">
+                        <span class="text-xs font-bold text-stone-600 uppercase tracking-wide">Phase 4</span>
+                        <h4 class="font-bold text-stone-900 text-base mb-1">Status- & Tiefenphase</h4>
+                        <p class="text-xs text-stone-600">Passe Sauerstoff- und Druckmarker an, räume die Auslage ab, bereite neue Karten vor und rücke den Rundenmarker um 1 Feld vor.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tab 3: Spezialisierungen & Aktionen -->
+        <section id="sec-actions" class="tab-content hidden space-y-6">
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-blue-200 space-y-6">
+                <div>
+                    <h3 class="font-title font-bold text-xl text-blue-950 mb-1 flex items-center gap-2">
+                        <i data-lucide="zap" class="w-6 h-6 text-blue-600"></i> Spezialisierungen & Aktionen
+                    </h3>
+                    <p class="text-sm text-stone-600">Deine Möglichkeiten basieren auf deinen drei Haupt-Spezialisierungen:</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                    <div class="p-4 bg-blue-50 rounded-xl border border-blue-200 space-y-2">
+                        <span class="text-2xl">💡</span>
+                        <h4 class="font-bold text-blue-950 text-sm">Inspiration / Kultur</h4>
+                        <p class="text-stone-600">Ermöglicht das Anwerben neuer Crew-Mitglieder und das Erfüllen von wissenschaftlichen Projekten.</p>
+                    </div>
+                    <div class="p-4 bg-blue-50 rounded-xl border border-blue-200 space-y-2">
+                        <span class="text-2xl">💰</span>
+                        <h4 class="font-bold text-blue-950 text-sm">Reichtum / Ressourcen</h4>
+                        <p class="text-stone-600">Wird benötigt, um teure Tiefsee-Tauchgänge zu finanzieren und Schächte oder Ausrüstung zu bauen.</p>
+                    </div>
+                    <div class="p-4 bg-blue-50 rounded-xl border border-blue-200 space-y-2">
+                        <span class="text-2xl">🌐</span>
+                        <h4 class="font-bold text-blue-950 text-sm">Einfluss / Netzwerke</h4>
+                        <p class="text-stone-600">Steuert deine Stärke beim Bieten und beim Errichten von Meeresschutzgebieten.</p>
+                    </div>
+                </div>
+
+                <div class="p-4 bg-blue-950 text-blue-50 rounded-xl space-y-2 text-xs">
+                    <h4 class="font-bold text-blue-200 text-sm">Die Macht von Spezialkarten & Ausrüstung</h4>
+                    <p>Spezialkarten, die du im Laufe des Spiels erworben hast, gewähren dir mächtige Einmal-Effekte oder permanente Modifikatoren für deine Tauchgänge. Achte darauf, sie im richtigen Moment zu zünden!</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tab 4: Tiefsee, Schächte & Wertung -->
+        <section id="sec-scoring" class="tab-content hidden space-y-6">
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-blue-200 space-y-6">
+                <div>
+                    <h3 class="font-title font-bold text-xl text-blue-950 mb-1 flex items-center gap-2">
+                        <i data-lucide="award" class="w-6 h-6 text-blue-600"></i> Tiefsee, Schächte & Schlusswertung
+                    </h3>
+                    <p class="text-sm text-stone-600">Wie sich am Ende des Spiels die Siegpunkte zusammensetzen:</p>
+                </div>
+
+                <div class="space-y-3 text-xs text-stone-700">
+                    <div class="p-3 bg-blue-50 rounded-xl border border-blue-200">
+                        <strong>1. Tiefsee-Regionen & Entdeckungen:</strong> Für erfolgreich abgeschlossene Tauchgänge und gesammelte Entdeckungsplättchen erhältst du direkte und indirekte Siegpunkte.
+                    </div>
+                    <div class="p-3 bg-blue-50 rounded-xl border border-blue-200">
+                        <strong>2. Schächte & Infrastruktur:</strong> Jeder gebaute Schacht und jedes verbundene Netzwerk auf dem Spielplan bringt bei der Schlusswertung wertvolle Punkte ein. Je größer und zusammenhängender dein Netz, desto besser.
+                    </div>
+                    <div class="p-3 bg-blue-50 rounded-xl border border-blue-200">
+                        <strong>3. Meeresschutzgebiete & Meeresbiologie:</strong> Erfüllte Naturschutzauflagen und geschützte Zonen werden am Ende im Verhältnis zu deinen Spezialisierungsleisten gewertet.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-stone-900 text-blue-400 text-xs py-5 border-t border-stone-800 mt-auto">
+        <div class="max-w-6xl mx-auto px-4 text-center">Endeavor: Die Tiefsee &bull; Regelbegleiter</div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        lucide.createIcons();
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`sec-${tabId}`).classList.remove('hidden');
+            document.getElementById(`tab-${tabId}`).classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
